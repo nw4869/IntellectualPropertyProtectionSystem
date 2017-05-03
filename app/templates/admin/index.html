@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin
+{% endblock %}
+
+{% block content_header_title %}
+Admin
+{% endblock %}
+
+{% block content_header_description %}
+hello admin
+{% endblock %}
+
+{% block content %}
+Hello world<br>
+    {{ url_for('admin.index').STATIC_URL }}     <br>
+    {{ url_for('admin.index').MEDIA_URL }}
+    {{ url_for('admin.index') }}
+    {{ request.path }}
+    {{ request.full_path }}
+{#    {{ request. }}#}
+    {{ '/admin/asdfa'.find(url_for('admin.index')) == 0 }}
+
+{% endblock %}
