@@ -8,3 +8,7 @@
     欢迎使用!
 {% endblock %}
 
+{% block script_doc_ready %}
+    nav_active = 0
+    {{ super() }}
+{% endblock %}

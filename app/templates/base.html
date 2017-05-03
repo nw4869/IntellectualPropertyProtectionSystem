@@ -65,26 +65,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active">
-                <a href="{{ url_for('main.index') }}">主页<span class="sr-only">(current)</span>
-                </a>
+            <li>
+                <a href="{{ url_for('main.index') }}">主页</a>
             </li>
-            <li><a href="#">Link</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+            <li><a href="{{ url_for('showcase.index') }}">作品展示</a></li>
+          {% if current_user.is_admin() %}
+            <li class="dropdown" id="navbar-admin">
+              <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">后台管理<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-                <li class="divider"></li>
-                <li><a href="#">One more separated link</a></li>
+                <li><a href="{{ url_for('admin.users') }}">用户管理</a></li>
+                <li><a href="{{ url_for('admin.files') }}">文件管理</a></li>
+                <li><a href="{{ url_for('admin.authorizations') }}">授权管理</a></li>
+                <li><a href="{{ url_for('admin.transactions') }}">交易管理</a></li>
               </ul>
             </li>
-              {% if current_user.is_admin() %}
-                  <li><a href="{{ url_for('admin.index') }}">后台管理</a>
-              {% endif %}
+          {% endif %}
           </ul>
 {#          <form class="navbar-form navbar-left" role="search">#}
 {#            <div class="form-group">#}
@@ -216,13 +211,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="user-body">
                   <div class="row">
                     <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
+                      <a href="#">我的文件</a>
                     </div>
                     <div class="col-xs-4 text-center">
-                      <a href="#">Sales</a>
+                      <a href="#">我的交易</a>
                     </div>
                     <div class="col-xs-4 text-center">
-                      <a href="#">Friends</a>
+                      <a href="#">我的授权</a>
                     </div>
                   </div>
                   <!-- /.row -->
@@ -230,7 +225,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Menu Footer-->
                 <li class="user-footer">
                   <div class="pull-left">
-                    <a href="#" class="btn btn-default btn-flat">个人资料</a>
+                    <a href="{{ url_for('user.index') }}" class="btn btn-default btn-flat">个人中心</a>
                   </div>
                   <div class="pull-right">
                     <a href="{{ url_for('auth.logout') }}" class="btn btn-default btn-flat">登出</a>
@@ -341,7 +336,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{ url_for('static', filename='adminlte/js/app.min.js') }}"></script>
 
     <script type="application/javascript" >
-
+        $(document).ready(function () {
+            {% block script_doc_ready %}
+            if (typeof nav_active === 'number') {
+                $("#navbar-collapse").find("> ul > li").each(function (i) {
+                    if (i === nav_active) {
+                        $(this).addClass('active');
+                        $(this).children('a').html(function(i, oldHtml) {
+                            return oldHtml + '<span class="sr-only">(current)</span>'
+                        })
+                    } else {
+                        $(this).removeClass('active')
+                    }
+                });
+            }
+            {% endblock %}
+        })
     </script>
 {%- endblock scripts %}
 {%- endblock body %}

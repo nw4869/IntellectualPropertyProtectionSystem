@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin
+{% endblock %}
+
+{% block content_header_title %}
+Admin
+{% endblock %}
+
+{% block content_header_description %}
+hello admin
+{% endblock %}
+
+{% block content %}
+Hello world<br>
+{% endblock %}
+
+{% block script_doc_ready %}
+    nav_active = 2
+    if (typeof nav_dropdown_active === 'number') {
+        $("#navbar-admin").find("> ul > li").each(function (i) {
+            if (i === nav_dropdown_active) {
+                $(this).addClass('active');
+                $(this).children('a').html(function(i, oldHtml) {
+                    return oldHtml + '<span class="sr-only">(current)</span>'
+                })
+            } else {
+                $(this).removeClass('active')
+            }
+        });
+    }
+    {{ super() }}
+{% endblock %}

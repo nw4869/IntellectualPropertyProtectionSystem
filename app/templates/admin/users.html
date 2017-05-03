@@ -1,15 +1,15 @@
-{% extends "base.html" %}
+{% extends "admin/base.html" %}
 
 {% block title %}
-Admin
+用户管理
 {% endblock %}
 
 {% block content_header_title %}
-Admin
+用户管理
 {% endblock %}
 
 {% block content_header_description %}
-hello admin
+hello users admin
 {% endblock %}
 
 {% block content %}
@@ -17,6 +17,6 @@ Hello world<br>
 {% endblock %}
 
 {% block script_doc_ready %}
-    nav_active = 2
+    nav_dropdown_active = 0
     {{ super() }}
 {% endblock %}

@@ -4,14 +4,15 @@ from flask_bootstrap import Bootstrap
 from flask_babel import Babel
 from flask_login import LoginManager
 
-
 from config import config
-from . import custom_error_pages
+from app import custom_error_pages
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
 babel = Babel()
 login_manager = LoginManager()
+
+from app.models import *
 
 
 def create_app(config_name):
@@ -26,6 +27,9 @@ def create_app(config_name):
     login_manager.session_protection = 'strong'
     login_manager.login_view = 'auth.login'
 
+    with app.app_context():
+        db.create_all()
+
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
@@ -37,6 +41,9 @@ def create_app(config_name):
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+    from .showcase import showcase as showcase_blueprint
+    app.register_blueprint(showcase_blueprint, url_prefix='/showcase')
 
     # app.error_handler_spec[None][404] = custom_error_pages.page_not_found
     app.register_error_handler(404, custom_error_pages.page_not_found)

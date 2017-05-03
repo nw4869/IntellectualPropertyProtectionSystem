@@ -1,10 +1,10 @@
 from flask import render_template
 from flask_login import login_required
 
-from . import user
+from . import showcase
 
 
-@user.route('/')
+@showcase.route('/')
 @login_required
 def index():
-    return render_template('user/index.html')
+    return render_template('showcase/index.html')
