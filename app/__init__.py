@@ -1,31 +1,56 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
-from flask_babel import Babel
+# from flask_babel import Babel
 from flask_login import LoginManager
+from flask_uploads import configure_uploads, patch_request_class, UploadSet
+import logging
+from logging import handlers
+
 
 from config import config
 from app import custom_error_pages
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
-babel = Babel()
+# babel = Babel()
 login_manager = LoginManager()
+
+# upload_photos = None
+upload_files = None
 
 from app.models import *
 
 
 def create_app(config_name):
     app = Flask(__name__)
-    app.config.from_object(config[config_name])
-    config[config_name].init_app(app)
+    the_config = config[config_name]
+    app.config.from_object(the_config)
+    the_config.init_app(app)
 
     bootstrap.init_app(app)
     db.init_app(app)
-    babel.init_app(app)
+    # babel.init_app(app)
+
+    # config flask-login
     login_manager.init_app(app)
     login_manager.session_protection = 'strong'
     login_manager.login_view = 'auth.login'
+    login_manager.login_message_category = 'warn'
+    login_manager.login_message = '请先登录'
+
+    # logging
+    log_formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
+    handler = logging.StreamHandler()
+    handler.setFormatter(log_formatter)
+    app.logger.addHandler(handler)
+
+    # config flask-uploads
+    # global upload_photos
+    # upload_photos = UploadSet('photos', the_config.FILE_TYPE_IMAGES)
+    global upload_files
+    upload_files = UploadSet('files', the_config.FILE_TYPE_ALLOW)
+    configure_uploads(app, upload_files)
 
     with app.app_context():
         db.create_all()

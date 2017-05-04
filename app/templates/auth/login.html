@@ -25,12 +25,31 @@
         {#  </div>#}
         <!-- /.login-logo -->
 
-        {% for message in get_flashed_messages() %}
-            <div class="alert alert-success alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <i class="icon fa fa-check"></i> {{ message }}
-            </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            {% if category == 'message' %}
+                <div class="alert alert-info alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="icon fa fa-info"></i> {{ message }}
+                </div>
+            {% elif category == 'success' %}
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="icon fa fa-check"></i> {{ message }}
+                </div>
+            {% elif category == 'warn' %}
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="icon fa fa-warning"></i> {{ message }}
+                </div>
+            {% elif category == 'error' %}
+                <div class="alert alert-error alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="icon fa fa-ban"></i> {{ message }}
+                </div>
+            {% endif %}
         {% endfor %}
+    {% endwith %}
 
         <div class="login-box-body">
             <p class="login-box-msg">用户登录</p>
@@ -80,8 +99,12 @@
             {#    </div>#}
             <!-- /.social-auth-links -->
 
-            <a href="#">忘记密码</a><br>
-            <a href="{{ url_for('.register') }}" class="text-center">注册新用户</a>
+            <p style="margin-top: 15px">
+                <a href="#">忘记密码</a><br>
+            </p>
+            <p style="margin-top: 15px">
+                <a href="{{ url_for('.register') }}">注册新用户</a>
+            </p>
 
         </div>
         <!-- /.login-box-body -->

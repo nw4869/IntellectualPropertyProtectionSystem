@@ -89,6 +89,9 @@ class File(db.Model):
     transactions = db.relationship('Transaction', backref='file', lazy='dynamic', cascade="all, delete-orphan")
     authorizations = db.relationship('Authorization', backref='file', lazy='dynamic', cascade="all, delete-orphan")
 
+    def __str__(self):
+        return '<File %r>' % self.hash
+
 
 class Authorization(db.Model):
     __tablename__ = 'authorizations'

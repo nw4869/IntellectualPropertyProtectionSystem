@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}
+    作品展示
+{% endblock %}
+
+{% block content_header_title %}
+    作品展示
+{% endblock %}
+
+{% block content_header_description %}
+    hello showcase
+{% endblock %}
+
+{% block content %}
+    <div style="margin: auto; width: 720px;">
+        <div class="box box-widget">
+            <div class="box-header with-border">
+                <div class="user-block">
+                    <img class="img-circle" src="{{ url_for('static', filename='adminlte/img/user2-160x160.jpg') }}" alt="User Image">
+                    <span class="username"><a href="#">{{ file.owner_user.name }}</a></span>
+                    <span class="description">{{ file.description }}</span>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <img class="img-responsive pad" style="margin: auto" src="{{ file_url }}" alt="Photo">
+
+                <p>I took this photo this morning. What do you guys think?</p>
+                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+                <span class="pull-right text-muted">127 likes</span>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block script_doc_ready %}
+    nav_active = 1
+    {{ super() }}
+{% endblock %}

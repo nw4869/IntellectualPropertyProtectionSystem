@@ -25,7 +25,7 @@ def login():
 @auth.route('/logout')
 def logout():
     logout_user()
-    flash('登出成功')
+    flash('登出成功', 'success')
     return redirect(url_for('main.index'))
 
 
@@ -37,6 +37,6 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data, password=form.password.data, name=form.name.data)
         db.session.add(user)
-        flash('注册成功, 请登录')
+        flash('注册成功, 请登录', 'success')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)

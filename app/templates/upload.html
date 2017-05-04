@@ -4,6 +4,21 @@
 {% block content_header_title %} 提交作品 {% endblock %}
 
 {% block content %}
-    <p>欢迎使用!</p>
+    <div style="width: 720px; margin: auto">
+        <div style="padding: 20px">
+            <form method="POST" enctype="multipart/form-data">
+
+                {% import "bootstrap/wtf.html" as wtf %}
+                {{ wtf.quick_form(form, button_map={'submit':'primary btn-flat'}) }}
+
+            </form>
+
+            {% if file_url %}
+                {#    <br><img src="{{ file_url }}">#}
+                <br>{{ file_url }}
+            {% endif %}
+        </div>
+    </div>
+
 {% endblock %}
 
