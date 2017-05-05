@@ -1,19 +1,61 @@
 {% extends "base.html" %}
 
 {% block title %}
-作品展示
+    作品展示
 {% endblock %}
 
 {% block content_header_title %}
-作品展示
+    作品展示
 {% endblock %}
 
 {% block content_header_description %}
-hello showcase
+    hello showcase
 {% endblock %}
 
 {% block content %}
-Hello world<br>
+    <div class="row ">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">上传的作品</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="row row-eq-height">
+                    {% for file in files %}
+                        {#                        {% for i in range(3) %}#}
+                        <div class="col-md-3">
+                            <div class="box box-widget">
+                                <div class="box-header with-border">
+                                    {#                            <a href="{{ url_for('showcase.show_file', hash=file.hash) }}">#}
+                                    <b>{{ file.filename }}</b>
+                                    {#                            </a>#}
+                                    {% if current_user == file.owner_user %}
+                                        <div class="box-tools">
+                                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                                    class="fa fa-times"></i></button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="box-body">
+                                    <a href="{{ url_for('showcase.show_file', hash=file.hash) }}">
+                                        <img class="img-responsive pad" style="margin: auto" src="{{ file.url }}"
+                                             alt="Photo">
+                                    </a>
+                                </div>
+
+                                <div class="box-footer">
+                                    {{ file.description }}
+                                </div>
+                            </div>
+                        </div>
+                        {#                        {% endfor %}#}
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+
+    </div>
 {% endblock %}
 
 {% block script_doc_ready %}

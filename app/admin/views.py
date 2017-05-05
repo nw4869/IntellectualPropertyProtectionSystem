@@ -1,34 +1,45 @@
-from flask import render_template
-from flask_login import login_required
+from flask import render_template, abort
+from flask_login import login_required, current_user
 
 from . import admin
+from app.models import *
 
 
 @admin.route('/')
 @login_required
 def index():
+    if not current_user.is_admin():
+        abort(403)
     return render_template('admin/index.html')
 
 
 @admin.route('/users')
 @login_required
 def users():
-    return render_template('admin/users.html')
+    if not current_user.is_admin():
+        abort(403)
+    return render_template('admin/users.html', users=User.query.all())
 
 
 @admin.route('/files')
 @login_required
 def files():
-    return render_template('admin/files.html')
+    if not current_user.is_admin():
+        abort(403)
+    return render_template('admin/files.html', files=File.query.all())
 
 
 @admin.route('/authorizations')
 @login_required
 def authorizations():
-    return render_template('admin/authorizations.html')
+    if not current_user.is_admin():
+        abort(403)
+    return render_template('admin/authorizations.html', authorizations=Authorization.query.all())
 
 
 @admin.route('/transactions')
 @login_required
 def transactions():
-    return render_template('admin/transactions.html')
+    if not current_user.is_admin():
+        abort(403)
+    return render_template('admin/transactions.html', transactions=Transaction.query.all())

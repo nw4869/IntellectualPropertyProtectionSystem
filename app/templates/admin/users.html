@@ -13,7 +13,63 @@ hello users admin
 {% endblock %}
 
 {% block content %}
-Hello world<br>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3>用户列表</h3>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example2" class="table table-bordered table-hover dataTable" role="grid"
+                                       aria-describedby="example2_info">
+                                    <!-- 标题行 -->
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-sort="ascending"
+                                                aria-label="用户名: activate to sort column descending">
+                                                用户名
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="姓名: activate to sort column ascending">
+                                                姓名
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="邮箱: activate to sort column ascending">
+                                                邮箱
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="角色: activate to sort column ascending">
+                                                角色
+                                            </th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users %}
+                                        <tr role="row" class="{{ 'odd' if loop.index0 % 2 == 0 else 'even'}}">
+                                            <td>{{ user.username }}</td>
+                                            <td>{{ user.name }}</td>
+                                            <td>{{ user.email }}</td>
+                                            <td>{{ '管理员' if user.role > 0 else '普通用户' }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block script_doc_ready %}

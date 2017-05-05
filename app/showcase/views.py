@@ -1,5 +1,6 @@
 from flask import render_template, abort, current_app
 from flask_login import login_required, current_user
+from sqlalchemy import desc
 
 import app
 from app import File
@@ -8,7 +9,11 @@ from . import showcase
 
 @showcase.route('/')
 def index():
-    return render_template('showcase/index.html')
+    files = File.query.order_by(desc(File.time)).all()
+    for file in files:
+        # TODO: file extension
+        file.url = app.upload_files.url(file.hash + '.jpg')
+    return render_template('showcase/index.html', files=files)
 
 
 @showcase.route('/<hash>')

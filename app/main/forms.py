@@ -1,4 +1,4 @@
-from _pysha3 import keccak_256
+from sha3 import keccak_256
 
 from flask_login import current_user
 from flask_wtf import FlaskForm
@@ -21,6 +21,8 @@ class UploadForm(FlaskForm):
 
     def validate_file(self, file_field):
         hash = keccak_256(file_field.data.stream.read()).hexdigest()
+        # reset file index to start
+        file_field.data.stream.seek(0)
         file = File.query.filter_by(hash=hash).first()
         if file:
             if file.owner_user == current_user:

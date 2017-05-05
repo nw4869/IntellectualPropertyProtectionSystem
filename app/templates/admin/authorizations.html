@@ -13,7 +13,77 @@ hello authorizations admin
 {% endblock %}
 
 {% block content %}
-Hello world<br>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3>授权列表</h3>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example2" class="table table-bordered table-hover dataTable" role="grid"
+                                       aria-describedby="example2_info">
+                                    <!-- 标题行 -->
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-sort="ascending"
+                                                aria-label="授权编号: activate to sort column descending">
+                                                授权编号
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="文件hash: activate to sort column ascending">
+                                                文件hash
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="授权者: activate to sort column ascending">
+                                                授权者
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="被授予者: activate to sort column ascending">
+                                                被授予者
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="授权类型: activate to sort column ascending">
+                                                授权类型
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="授权时间: activate to sort column ascending">
+                                                授权时间
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="区块链txhash: activate to sort column ascending">
+                                                区块链txhash
+                                            </th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+{#                                    TODO #}
+{#                                        {% for user in users %}#}
+{#                                        <tr role="row" class="{{ 'odd' if loop.index0 % 2 == 0 else 'even'}}">#}
+{#                                            <td>{{ user.username }}</td>#}
+{#                                            <td>{{ user.name }}</td>#}
+{#                                            <td>{{ user.email }}</td>#}
+{#                                            <td>{{ '管理员' if user.role > 0 else '普通用户' }}</td>#}
+{#                                        </tr>#}
+{#                                        {% endfor %}#}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block script_doc_ready %}

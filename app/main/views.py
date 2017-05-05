@@ -23,7 +23,6 @@ def index():
 def upload():
     form = UploadForm()
     if form.validate_on_submit():
-        # TODO FIX hash
         hash = keccak_256(form.file.data.stream.read()).hexdigest()
         filename = form.filename.data
         description = form.description.data
