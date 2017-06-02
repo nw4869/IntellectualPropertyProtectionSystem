@@ -55,6 +55,24 @@ def submit_file(file):
     return my_contract.transact().proof(file_hash, file.filename, file.description, file.for_sell, price, owner)
 
 
+def purchase(user, file):
+
+    address = user.wallets[0].address
+    price = to_wei(file.price)
+    file_hash = bytearray(unhexlify(file.hash))
+
+    # unlock
+    web3.personal.unlockAccount(address, '4869', 0)
+
+    gas_limit = web3.eth.getBlock('latest')['gasLimit']
+    gas_estimate = my_contract.estimateGas({'from': address, 'value': price}).purchase(file_hash)
+
+    if gas_estimate > gas_limit * 9 / 10:
+        raise EthereumException
+
+    return my_contract.transact({'from': address, 'value': price}).purchase(file_hash)
+
+
 def new_account(password):
     return web3.personal.newAccount(password)
 

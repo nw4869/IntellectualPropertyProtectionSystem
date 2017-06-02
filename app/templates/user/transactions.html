@@ -1,18 +1,19 @@
 {% extends "admin/transactions.html" %}
 
 {% block title %}
-交易管理
+我的交易
 {% endblock %}
 
 {% block content_header_title %}
-交易管理
+我的交易
 {% endblock %}
 
 {% block content_header_description %}
-hello transactions admin
+    my transactions
 {% endblock %}
 
 {% block script_doc_ready %}
     {{ super() }}
+    active_nav(2)
     active_dropdown(3)
 {% endblock %}

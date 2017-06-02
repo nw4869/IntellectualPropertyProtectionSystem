@@ -42,7 +42,7 @@ def files():
 def transactions():
     return render_template(
         'user/transactions.html',
-        files=Transaction.query.filter(
+        transactions=Transaction.query.filter(
             or_(Transaction.buyer_user == current_user, Transaction.seller_user == current_user))
             .order_by(Transaction.time.desc()).all()
     )
@@ -53,7 +53,7 @@ def transactions():
 def authorizations():
     return render_template(
         'user/authorizations.html',
-        files=Authorization.query.filter(
+        authorizations=Authorization.query.filter(
             or_(Authorization.authorizer_user == current_user, Authorization.authorizer_user == current_user))
             .order_by(Authorization.time.desc()).all()
     )

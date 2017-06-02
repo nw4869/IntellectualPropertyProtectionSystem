@@ -88,6 +88,7 @@ def create_app(config_name):
     from .etheruem import ethereum
     app.register_blueprint(ethereum, url_prefix='/ethereum')
 
+    app.register_error_handler(400, custom_error_pages.request_error)
     app.register_error_handler(403, custom_error_pages.forbidden)
     # app.error_handler_spec[None][404] = custom_error_pages.page_not_found
     app.register_error_handler(404, custom_error_pages.page_not_found)
