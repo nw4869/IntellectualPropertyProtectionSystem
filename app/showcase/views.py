@@ -9,7 +9,7 @@ from . import showcase
 
 @showcase.route('/')
 def index():
-    files = File.query.order_by(desc(File.time)).all()
+    files = File.query.filter_by(for_sell=True).order_by(desc(File.time)).all()
     for file in files:
         # TODO: file extension
         file.url = app.upload_files.url(file.hash + '.jpg')
@@ -21,6 +21,9 @@ def show_file(hash):
     file = File.query.filter_by(hash=hash).first()
     if file is None:
         abort(404)
+
+    if not file.for_sell and file.owner_user != current_user:
+        abort(403)
 
     # TODO fix: file extension
     file_url = app.upload_files.url(file.hash+'.jpg')

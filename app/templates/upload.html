@@ -3,10 +3,19 @@
 {% block title %} 提交作品 {% endblock %}
 {% block content_header_title %} 提交作品 {% endblock %}
 
+{% block content_header_description %}
+    知识产权登记
+{% endblock %}
+
+{% block levels %}
+  <li><a href="#"><i class="fa fa-dashboard"></i>主页</a></li>
+  <li class="active">提交作品</li>
+{% endblock %}
+
 {% block content %}
     <div style="width: 720px; margin: auto">
         <div style="padding: 20px">
-            <form method="POST" enctype="multipart/form-data">
+            <form id="uploadForm" method="POST" enctype="multipart/form-data">
 
                 {% import "bootstrap/wtf.html" as wtf %}
                 {{ wtf.quick_form(form, button_map={'submit':'primary btn-flat'}) }}
@@ -22,3 +31,11 @@
 
 {% endblock %}
 
+{% block script_doc_ready %}
+    {{ super() }}
+{#    $("#uploadForm").submit(function () {#}
+{#        if (!$('#for_sell').is(':checked')) {#}
+{#            $('#price').val('-1');#}
+{#        }#}
+{#    })#}
+{% endblock %}

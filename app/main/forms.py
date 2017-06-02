@@ -1,13 +1,14 @@
+import sys
 from sha3 import keccak_256
 
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import SubmitField, StringField, TextAreaField
-from wtforms.validators import DataRequired, Length, ValidationError
+from wtforms import SubmitField, StringField, TextAreaField, BooleanField, FloatField
+from wtforms.validators import DataRequired, Length, ValidationError, NumberRange
 
 import app
-from app.models import File
+from app.models import File, Wallet
 
 
 class UploadForm(FlaskForm):
@@ -17,6 +18,8 @@ class UploadForm(FlaskForm):
         FileAllowed(app.upload_files, '不支持该文件类型'),
         FileRequired('文件未选择！')
     ])
+    for_sell = BooleanField('是否展示和出售')
+    price = FloatField('价钱(以太)', default=0)
     submit = SubmitField('上传')
 
     def validate_file(self, file_field):
@@ -30,3 +33,14 @@ class UploadForm(FlaskForm):
             else:
                 raise ValidationError('作品已有人上传')
 
+    def validate_price(self, price_field):
+        if self.for_sell.data:
+            if price_field.data is None:
+                raise ValidationError('请输入价钱')
+            else:
+                NumberRange(min=0, max=sys.maxsize)(self, price_field)
+        # if not current_user.wallets:
+        #     raise ValidationError('没有以太坊钱包')
+        # wallet = current_user.wallets[0]
+        # if wallet.balance < price_field.data:
+        #     raise ValidationError('余额不足')

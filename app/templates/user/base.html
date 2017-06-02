@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "admin/base.html" %}
 
 {% block title %}
 Admin
@@ -17,9 +17,11 @@ Hello world<br>
 {% endblock %}
 
 {% block script_doc_ready %}
+    {{ super() }}
+{#    TODO fix drop down active #}
     function active_dropdown(nav_dropdown_active) {
         if (typeof nav_dropdown_active === 'number') {
-            $("#navbar-admin").find("> ul > li").each(function (i) {
+            $("#navbar-user").find("> ul > li").each(function (i) {
                 if (i === nav_dropdown_active) {
                     $(this).addClass('active');
                     $(this).children('a').html(function(i, oldHtml) {
@@ -31,6 +33,5 @@ Hello world<br>
             });
         }
     }
-    {{ super() }}
-    active_nav(3)
+    active_nav(2)
 {% endblock %}

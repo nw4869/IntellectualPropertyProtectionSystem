@@ -1,0 +1,21 @@
+{% extends "admin/files.html" %}
+
+{% block title %}
+    我的知识产权
+{% endblock %}
+
+{% block content_header_title %}
+    我的知识产权
+{% endblock %}
+
+{% block content_header_description %}
+    hello files admin
+{% endblock %}
+
+
+{% block script_doc_ready %}
+{#    nav_dropdown_active = 1#}
+    {{ super() }}
+    active_nav(2)
+    active_dropdown(1)
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}
+    区块链区块信息
+{% endblock %}
+
+{% block content_header_title %}
+    Block
+{% endblock %}
+
+{% block content_header_description %}
+   {{ block.blockNumber }}
+{% endblock %}
+
+{% block levels %}
+    <li><a href="#"><i class="fa fa-dashboard"></i>主页</a></li>
+    <li><a href="#">区块链信息</a></li>
+    <li class="active">交易详情</li>
+{% endblock %}
+
+{% block content %}
+    <div class="box">
+        <div class="box-body no-padding">
+            <table class="table" style="font-size: large">
+                <tbody>
+                    <tr><td>height: </td><td>{{ block.number }}</td></tr>
+{#                    <tr><td>timestamp: </td><td>{{ block.timestamp }}</td></tr>#}
+                    <tr><td>timestamp: </td>
+                        <td>
+                            {% if block.timestamp is not none %}
+                                {{ moment(block.timestamp).format('YYYY-MM-DD HH:mm:ss')  }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr><td>transactions: </td><td>{{ block.transactions | length }}</td></tr>
+                    <tr><td>hash: </td><td>{{ block.hash }}</td> </tr>
+                    <tr><td>parent hash: </td><td>{{ block.parentHash }}</td> </tr>
+                    <tr><td>sha3 uncles: </td><td>{{ block.sha3Uncles }}</td> </tr>
+                    <tr><td>miner: </td><td>{{ block.miner }}</td></tr>
+                    <tr><td>difficulty: </td><td>{{ block.difficulty }}</td></tr>
+                    <tr><td>total difficulty: </td><td>{{ block.totalDifficulty }}</td></tr>
+                    <tr><td>size: </td><td>{{ block.size }} bytes</td></tr>
+                    <tr><td>gas limit: </td><td>{{ block.gasLimit }} </td></tr>
+                    <tr><td>gas used: </td><td>{{ block.gasUsed }} </td></tr>
+                    <tr><td>nonce: </td><td>{{ block.nonce }}</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script_doc_ready %}
+    {{ super() }}
+{% endblock %}

@@ -27,8 +27,8 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="example2" class="table table-bordered table-hover dataTable" role="grid"
-                                       aria-describedby="example2_info">
+                                <table id="example2" class="table table-bordered table-striped  dataTable" role="grid"
+                                       aria-describedby="example2_info" style="word-wrap:break-word;word-break:break-all">
                                     <!-- 标题行 -->
                                     <thead>
                                         <tr role="row">
@@ -54,6 +54,14 @@
                                                 所有者
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="售出: activate to sort column ascending">
+                                                售出
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="售价: activate to sort column ascending">
+                                                售价
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1" aria-label="区块链tx: activate to sort column ascending">
                                                 区块链tx
                                             </th>
@@ -62,12 +70,14 @@
                                     <tbody>
                                         {% for file in files %}
                                         <tr role="row" class="{{ 'odd' if loop.index0 % 2 == 0 else 'even'}}">
-                                            <td>{{ file.hash }}</td>
+                                            <td class="col-md-3"><a href="{{ url_for('showcase.show_file', hash=file.hash) }}"> {{ file.hash }}</a></td>
                                             <td>{{ file.filename }}</td>
                                             <td>{{ file.description }}</td>
                                             <td>{{ file.time }}</td>
                                             <td>{{ file.owner }}</td>
-                                            <td>{{ file.txhash }}</td>
+                                            <td>{{ file.for_sell }}</td>
+                                            <td>{{ file.price }}</td>
+                                            <td class="col-md-3"><a href="{{ url_for('ethereum.transaction', tx_hash=file.txhash) }}"> {{ file.txhash }}</a></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -83,6 +93,6 @@
 {% endblock %}
 
 {% block script_doc_ready %}
-    nav_dropdown_active = 1
     {{ super() }}
+    active_dropdown(1)
 {% endblock %}

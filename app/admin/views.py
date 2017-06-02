@@ -26,7 +26,7 @@ def users():
 def files():
     if not current_user.is_admin():
         abort(403)
-    return render_template('admin/files.html', files=File.query.all())
+    return render_template('admin/files.html', files=File.query.order_by(File.time.desc()).all())
 
 
 @admin.route('/authorizations')

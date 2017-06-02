@@ -85,6 +85,8 @@ class File(db.Model):
     description = db.Column(db.String(255), nullable=True)
     owner = db.Column(db.String(255), db.ForeignKey('users.username'), nullable=False)
     txhash = db.Column(db.String(255), nullable=False)
+    for_sell = db.Column(db.Boolean, nullable=False, default=False)
+    price = db.Column(db.Float, nullable=True)
 
     transactions = db.relationship('Transaction', backref='file', lazy='dynamic', cascade="all, delete-orphan")
     authorizations = db.relationship('Authorization', backref='file', lazy='dynamic', cascade="all, delete-orphan")

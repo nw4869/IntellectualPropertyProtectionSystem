@@ -29,12 +29,12 @@
                                     {#                            <a href="{{ url_for('showcase.show_file', hash=file.hash) }}">#}
                                     <b>{{ file.filename }}</b>
                                     {#                            </a>#}
-                                    {% if current_user == file.owner_user %}
-                                        <div class="box-tools">
-                                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i
-                                                    class="fa fa-times"></i></button>
-                                        </div>
-                                    {% endif %}
+{#                                    {% if current_user == file.owner_user %}#}
+{#                                        <div class="box-tools">#}
+{#                                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i#}
+{#                                                    class="fa fa-times"></i></button>#}
+{#                                        </div>#}
+{#                                    {% endif %}#}
                                 </div>
                                 <div class="box-body">
                                     <a href="{{ url_for('showcase.show_file', hash=file.hash) }}">
@@ -59,6 +59,6 @@
 {% endblock %}
 
 {% block script_doc_ready %}
-    nav_active = 1
     {{ super() }}
+    active_nav(1)
 {% endblock %}

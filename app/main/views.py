@@ -8,7 +8,7 @@ from . import main
 from .forms import UploadForm
 from app import db
 import app
-from app.ethereum import submit_file
+from app.ethereum_service import submit_file
 from app.models import File
 
 
@@ -22,12 +22,20 @@ def index():
 @login_required
 def upload():
     form = UploadForm()
+    # form.validate_on_submit()
+    # 无错误或者不出售价钱为空
+    # if form.is_submitted() and \
+    #         (len(form.errors) == 0 or (len(form.errors) == 1 and form.price.data is None and not form.for_sell.data)):
+    price = form.price.data
+    if form.is_submitted() and not price:
+        price = 0
     if form.validate_on_submit():
         hash = keccak_256(form.file.data.stream.read()).hexdigest()
         filename = form.filename.data
         description = form.description.data
+        for_sell = form.for_sell.data
 
-        file = File(hash=hash, filename=filename, description=description)
+        file = File(hash=hash, filename=filename, description=description, for_sell=for_sell, price=price)
         # file.owner_user = current_user
         file.owner = current_user.username
         # file.time = datetime.now()

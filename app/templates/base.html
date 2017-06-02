@@ -69,12 +69,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <a href="{{ url_for('main.index') }}">主页</a>
             </li>
             <li><a href="{{ url_for('showcase.index') }}">作品展示</a></li>
+          {% if current_user.is_authenticated %}
+              <li class="dropdown" id="navbar-my">
+                  <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">个人中心<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                      <li><a href="{{ url_for('user.files') }}">我的知识产权</a></li>
+                      <li><a href="{{ url_for('user.authorizations') }}">我的授权</a></li>
+                      <li><a href="{{ url_for('user.transactions') }}">我的交易</a></li>
+                  </ul>
+              </li>
+          {% endif %}
+
           {% if current_user.is_admin() %}
             <li class="dropdown" id="navbar-admin">
               <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">后台管理<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="{{ url_for('admin.users') }}">用户管理</a></li>
-                <li><a href="{{ url_for('admin.files') }}">文件管理</a></li>
+                <li><a href="{{ url_for('admin.files') }}">知识产权管理</a></li>
                 <li><a href="{{ url_for('admin.authorizations') }}">授权管理</a></li>
                 <li><a href="{{ url_for('admin.transactions') }}">交易管理</a></li>
               </ul>
@@ -92,101 +103,101 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
             {% if current_user.is_authenticated %}
-            <!-- Messages: style can be found in dropdown.less-->
-            <li class="dropdown messages-menu">
-              <!-- Menu toggle button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-envelope-o"></i>
-                <span class="label label-success">4</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="header">You have 4 messages</li>
-                <li>
-                  <!-- inner menu: contains the messages -->
-                  <ul class="menu">
-                    <li><!-- start message -->
-                      <a href="#">
-                        <div class="pull-left">
-                          <!-- User Image -->
-                          <img src="{{ url_for('static', filename='adminlte/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
-                        </div>
-                        <!-- Message title and timestamp -->
-                        <h4>
-                          Support Team
-                          <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                        </h4>
-                        <!-- The message -->
-                        <p>Why not buy a new awesome theme?</p>
-                      </a>
-                    </li>
-                    <!-- end message -->
-                  </ul>
-                  <!-- /.menu -->
-                </li>
-                <li class="footer"><a href="#">See All Messages</a></li>
-              </ul>
-            </li>
-            <!-- /.messages-menu -->
-
-            <!-- Notifications Menu -->
-            <li class="dropdown notifications-menu">
-              <!-- Menu toggle button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-bell-o"></i>
-                <span class="label label-warning">10</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="header">You have 10 notifications</li>
-                <li>
-                  <!-- Inner Menu: contains the notifications -->
-                  <ul class="menu">
-                    <li><!-- start notification -->
-                      <a href="#">
-                        <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                      </a>
-                    </li>
-                    <!-- end notification -->
-                  </ul>
-                </li>
-                <li class="footer"><a href="#">View all</a></li>
-              </ul>
-            </li>
-            <!-- Tasks Menu -->
-            <li class="dropdown tasks-menu">
-              <!-- Menu Toggle Button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="fa fa-flag-o"></i>
-                <span class="label label-danger">9</span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="header">You have 9 tasks</li>
-                <li>
-                  <!-- Inner menu: contains the tasks -->
-                  <ul class="menu">
-                    <li><!-- Task item -->
-                      <a href="#">
-                        <!-- Task title and progress text -->
-                        <h3>
-                          Design some buttons
-                          <small class="pull-right">20%</small>
-                        </h3>
-                        <!-- The progress bar -->
-                        <div class="progress xs">
-                          <!-- Change the css width attribute to simulate progress -->
-                          <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                            <span class="sr-only">20% Complete</span>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <!-- end task item -->
-                  </ul>
-                </li>
-                <li class="footer">
-                  <a href="#">View all tasks</a>
-                </li>
-              </ul>
-            </li>
+{#            <!-- Messages: style can be found in dropdown.less-->#}
+{#            <li class="dropdown messages-menu">#}
+{#              <!-- Menu toggle button -->#}
+{#              <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+{#                <i class="fa fa-envelope-o"></i>#}
+{#                <span class="label label-success">4</span>#}
+{#              </a>#}
+{#              <ul class="dropdown-menu">#}
+{#                <li class="header">You have 4 messages</li>#}
+{#                <li>#}
+{#                  <!-- inner menu: contains the messages -->#}
+{#                  <ul class="menu">#}
+{#                    <li><!-- start message -->#}
+{#                      <a href="#">#}
+{#                        <div class="pull-left">#}
+{#                          <!-- User Image -->#}
+{#                          <img src="{{ url_for('static', filename='adminlte/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">#}
+{#                        </div>#}
+{#                        <!-- Message title and timestamp -->#}
+{#                        <h4>#}
+{#                          Support Team#}
+{#                          <small><i class="fa fa-clock-o"></i> 5 mins</small>#}
+{#                        </h4>#}
+{#                        <!-- The message -->#}
+{#                        <p>Why not buy a new awesome theme?</p>#}
+{#                      </a>#}
+{#                    </li>#}
+{#                    <!-- end message -->#}
+{#                  </ul>#}
+{#                  <!-- /.menu -->#}
+{#                </li>#}
+{#                <li class="footer"><a href="#">See All Messages</a></li>#}
+{#              </ul>#}
+{#            </li>#}
+{#            <!-- /.messages-menu -->#}
+{##}
+{#            <!-- Notifications Menu -->#}
+{#            <li class="dropdown notifications-menu">#}
+{#              <!-- Menu toggle button -->#}
+{#              <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+{#                <i class="fa fa-bell-o"></i>#}
+{#                <span class="label label-warning">10</span>#}
+{#              </a>#}
+{#              <ul class="dropdown-menu">#}
+{#                <li class="header">You have 10 notifications</li>#}
+{#                <li>#}
+{#                  <!-- Inner Menu: contains the notifications -->#}
+{#                  <ul class="menu">#}
+{#                    <li><!-- start notification -->#}
+{#                      <a href="#">#}
+{#                        <i class="fa fa-users text-aqua"></i> 5 new members joined today#}
+{#                      </a>#}
+{#                    </li>#}
+{#                    <!-- end notification -->#}
+{#                  </ul>#}
+{#                </li>#}
+{#                <li class="footer"><a href="#">View all</a></li>#}
+{#              </ul>#}
+{#            </li>#}
+{#            <!-- Tasks Menu -->#}
+{#            <li class="dropdown tasks-menu">#}
+{#              <!-- Menu Toggle Button -->#}
+{#              <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+{#                <i class="fa fa-flag-o"></i>#}
+{#                <span class="label label-danger">9</span>#}
+{#              </a>#}
+{#              <ul class="dropdown-menu">#}
+{#                <li class="header">You have 9 tasks</li>#}
+{#                <li>#}
+{#                  <!-- Inner menu: contains the tasks -->#}
+{#                  <ul class="menu">#}
+{#                    <li><!-- Task item -->#}
+{#                      <a href="#">#}
+{#                        <!-- Task title and progress text -->#}
+{#                        <h3>#}
+{#                          Design some buttons#}
+{#                          <small class="pull-right">20%</small>#}
+{#                        </h3>#}
+{#                        <!-- The progress bar -->#}
+{#                        <div class="progress xs">#}
+{#                          <!-- Change the css width attribute to simulate progress -->#}
+{#                          <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">#}
+{#                            <span class="sr-only">20% Complete</span>#}
+{#                          </div>#}
+{#                        </div>#}
+{#                      </a>#}
+{#                    </li>#}
+{#                    <!-- end task item -->#}
+{#                  </ul>#}
+{#                </li>#}
+{#                <li class="footer">#}
+{#                  <a href="#">View all tasks</a>#}
+{#                </li>#}
+{#              </ul>#}
+{#            </li>#}
 
             <!-- User Account Menu -->
             <li class="dropdown user user-menu">
@@ -310,9 +321,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="container">
         {% block footer %}
       <div class="pull-right hidden-xs">
-        <b>Version</b> {{ version or "0.1" }}
+        <b>Version</b> {{ version or "1.0" }}
       </div>
-      <strong>Copyright &copy; 2017 <a href="{{ url_for('main.index') }}">Elpam</a>.</strong> All rights
+      <strong>Copyright &copy; 2017 <a href="{{ url_for('main.index') }}">知识产权保护系统</a>.</strong> All rights
       reserved.
         {% endblock %}
     </div>
@@ -332,23 +343,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
     <script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script>
 
+    {{ moment.include_moment() }}
+
     <!-- AdminLTE App -->
     <script src="{{ url_for('static', filename='adminlte/js/app.min.js') }}"></script>
 
     <script type="application/javascript" >
         $(document).ready(function () {
             {% block script_doc_ready %}
-            if (typeof nav_active === 'number') {
-                $("#navbar-collapse").find("> ul > li").each(function (i) {
-                    if (i === nav_active) {
-                        $(this).addClass('active');
-                        $(this).children('a').html(function(i, oldHtml) {
-                            return oldHtml + '<span class="sr-only">(current)</span>'
-                        })
-                    } else {
-                        $(this).removeClass('active')
-                    }
-                });
+            function active_nav(nav_active) {
+                if (typeof nav_active === 'number') {
+                    $("#navbar-collapse").find("> ul > li").each(function (i) {
+                        if (i === nav_active) {
+                            $(this).addClass('active');
+                            $(this).children('a').html(function(i, oldHtml) {
+                                return oldHtml + '<span class="sr-only">(current)</span>'
+                            })
+                        } else {
+                            $(this).removeClass('active')
+                        }
+                    });
+                }
             }
             {% endblock %}
         })

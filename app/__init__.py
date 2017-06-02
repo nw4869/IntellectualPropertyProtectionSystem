@@ -4,6 +4,7 @@ from flask_bootstrap import Bootstrap
 # from flask_babel import Babel
 from flask_login import LoginManager
 from flask_uploads import configure_uploads, patch_request_class, UploadSet
+from flask_moment import Moment
 import logging
 from logging import handlers
 
@@ -15,6 +16,7 @@ bootstrap = Bootstrap()
 db = SQLAlchemy()
 # babel = Babel()
 login_manager = LoginManager()
+moment = Moment()
 
 # upload_photos = None
 upload_files = None
@@ -31,6 +33,7 @@ def create_app(config_name):
     bootstrap.init_app(app)
     db.init_app(app)
     # babel.init_app(app)
+    moment.init_app(app)
 
     # config flask-login
     login_manager.init_app(app)
@@ -69,6 +72,9 @@ def create_app(config_name):
 
     from .showcase import showcase as showcase_blueprint
     app.register_blueprint(showcase_blueprint, url_prefix='/showcase')
+
+    from .etheruem import ethereum
+    app.register_blueprint(ethereum, url_prefix='/ethereum')
 
     # app.error_handler_spec[None][404] = custom_error_pages.page_not_found
     app.register_error_handler(404, custom_error_pages.page_not_found)

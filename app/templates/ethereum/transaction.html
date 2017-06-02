@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Transaction {{ tx.hash }}
+{% endblock %}
+
+{% block content_header_title %}
+    Transaction
+{% endblock %}
+
+{% block content_header_description %}
+    {{ tx.hash }}
+{% endblock %}
+
+{% block levels %}
+    <li><a href="#"><i class="fa fa-dashboard"></i>主页</a></li>
+    <li><a href="#">区块链信息</a></li>
+    <li class="active">交易详情</li>
+{% endblock %}
+
+{% block content %}
+    <div class="box">
+        <div class="box-body no-padding">
+            <table class="table" style="font-size: large">
+                <tbody>
+                    <tr><td>Tx hash: </td><td>{{ tx.hash }}</td></tr>
+                    <tr><td>Tx index</td><td>{{ tx.transactionIndex }}</td></tr>
+                    <tr><td>blockNumber: </td>
+                        <td>
+                            {% if tx.blockNumber is not none %}
+                                <a href="{{ url_for('ethereum.block', block_num=tx.blockNumber) }}">{{ tx.blockNumber }}</a>
+                                 (区块确认数：{{ tx.confirmations }})
+                            {% else %}
+                                等待中
+                            {% endif %}
+                        </td>
+                    </tr>
+{#                    <tr><td>blockHash: </td><td>{{ tx.blockHash }}</td></tr>#}
+                    <tr><td>from: </td><td>{{ tx.from }}</td></tr>
+                    <tr><td>to: </td><td>{{ tx.to }}</td></tr>
+                    <tr><td>gsa: </td><td>{{ tx.gas }}</td></tr>
+                    <tr><td>gasPrice: </td><td>{{ tx.gasPrice }}</td></tr>
+                    <tr><td>nonce: </td><td>{{ tx.nonce }}</td></tr>
+                    <tr><td>value: </td><td>{{ tx.value }}</td></tr>
+                    <tr><td>input: </td><td style="word-wrap:break-word;word-break:break-all">{{ tx.input }}</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script_doc_ready %}
+    {{ super() }}
+{% endblock %}

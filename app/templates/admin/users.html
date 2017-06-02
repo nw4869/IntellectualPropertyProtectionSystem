@@ -73,6 +73,6 @@ hello users admin
 {% endblock %}
 
 {% block script_doc_ready %}
-    nav_dropdown_active = 0
     {{ super() }}
+    active_dropdown(0)
 {% endblock %}
