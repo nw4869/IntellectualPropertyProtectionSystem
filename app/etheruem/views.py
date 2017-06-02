@@ -2,7 +2,10 @@ from flask import render_template, abort, redirect, url_for
 from datetime import datetime
 import re
 
+from flask_login import login_required, current_user
+
 from app.etheruem import ethereum
+from app import ethereum_service
 from app.ethereum_service import get_transaction, get_block, get_block_by_tx, get_tx_distance, get_latest_block_number, get_latest_block
 
 
@@ -36,4 +39,10 @@ def transaction(tx_hash):
     if tx is None:
         abort(404)
     tx['confirmations'] = get_tx_distance(tx_hash)
+
+    block = get_block_by_tx(tx['hash'])
+    if block is not None:
+        tx['timestamp'] = datetime.fromtimestamp(block['timestamp'])
+
     return render_template('ethereum/transaction.html', tx=tx)
+

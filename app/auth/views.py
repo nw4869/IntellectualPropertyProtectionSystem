@@ -3,8 +3,9 @@ from flask_login import login_user, logout_user, login_required
 
 from app import db
 from . import auth
-from ..models import User
+from ..models import User, Wallet
 from .forms import LoginForm, RegisterForm
+from app.ethereum_service import new_account
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -37,6 +38,9 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data, password=form.password.data, name=form.name.data)
         db.session.add(user)
+        address = new_account(form.password.data)
+        wallet = Wallet(address=address, key='TODO', owner_user=user)
+        db.session.add(wallet)
         flash('注册成功, 请登录', 'success')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)

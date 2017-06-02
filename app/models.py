@@ -111,8 +111,7 @@ class Authorization(db.Model):
 
 class Wallet(db.Model):
     __tablename__ = 'wallets'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     address = db.Column(db.String(255), nullable=False)
     key = db.Column(db.String(255), nullable=False)
-    balance = db.Column(db.Float, nullable=False)
     owner = db.Column(db.String(255), db.ForeignKey('users.username'), nullable=False)

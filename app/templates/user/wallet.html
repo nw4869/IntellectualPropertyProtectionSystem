@@ -1,0 +1,73 @@
+{% extends "user/base.html" %}
+
+{% block title %}
+    我的钱包
+{% endblock %}
+
+{% block content_header_title %}
+    我的钱包
+{% endblock %}
+
+{% block content_header_description %}
+    my wallet
+{% endblock %}
+
+{% block content %}
+    <div class="box">
+        <div class="box-body no-padding">
+            <table class="table" style="font-size: medium">
+                <tbody>
+                <tr>
+                    <td>以太坊地址</td>
+                    <td>{{ wallet.address }}</td>
+                </tr>
+                <tr>
+                    <td>余额</td>
+                    <td>{{ wallet.balance }} ether</td>
+                </tr>
+                {#                    <tr><td>转账</td><td><input name="money" id="money"> ether <span style="margin-left: 16px"><button class="btn btn-primary ">提交</button></span></td></tr>#}
+                <tr>
+                    <td>转账</td>
+                    <td>
+{#                        <div>#}
+                            <form class="form-inline" method="post">
+                                {{ form.hidden_tag() }}
+                                <label class="sr-only" for="to">收款人地址</label>
+                                <div class="input-group form-group col-md-5 required {{ 'has-error' if form.errors.get('to') is not none }}" style="vertical-align: top">
+                                    <input type="text" class="form-control" name="to" id="to" placeholder="收款人地址">
+                                    <div class="help-block">
+                                        {{ form.errors.to[0] if form.errors.get('to') is not none }}
+                                    </div>
+                                </div>
+                                <label class="sr-only" for="money">金额</label>
+                                <div class="input-group form-group col-md-3 required {{ 'has-error' if form.errors.get('value') is not none }}" style="vertical-align: top">
+                                    <input type="text" class="form-control" name='value' id="value" placeholder="ether">
+                                    <div class="help-block">
+{#                                        {{ form.errors.value[0] if form.errors.get('value') is not none}}#}
+                                        {{ form.errors.value[0] if form.errors.value is defined}}
+                                    </div>
+                                </div>
+{#                                ether#}
+                                <button type="submit" id="submit" name="submit" class="btn btn-primary" style="vertical-align: top">提交</button>
+                            </form>
+{#                        </div>#}
+                        {% if tx_hash is defined %}
+                        <div  style="margin-top: 8px">
+                            <span class="text-green"> 转账已提交：</span>
+                            <a href="{{ url_for('ethereum.transaction', tx_hash=tx_hash) }}"> {{ tx_hash }} </a>
+                        </div>
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block script_doc_ready %}
+    {{ super() }}
+    active_dropdown(0)
+{% endblock %}

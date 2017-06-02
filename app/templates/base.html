@@ -73,6 +73,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <li class="dropdown" id="navbar-my">
                   <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">个人中心<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
+                      <li><a href="{{ url_for('user.wallet') }}">我的钱包</a></li>
                       <li><a href="{{ url_for('user.files') }}">我的知识产权</a></li>
                       <li><a href="{{ url_for('user.authorizations') }}">我的授权</a></li>
                       <li><a href="{{ url_for('user.transactions') }}">我的交易</a></li>

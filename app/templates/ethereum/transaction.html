@@ -35,6 +35,11 @@
                             {% endif %}
                         </td>
                     </tr>
+                    <tr><td>timestamp</td>
+                        <td>
+                            {{ tx.timestamp if tx.timestamp is not none else '等待中'}}
+                        </td>
+                    </tr>
 {#                    <tr><td>blockHash: </td><td>{{ tx.blockHash }}</td></tr>#}
                     <tr><td>from: </td><td>{{ tx.from }}</td></tr>
                     <tr><td>to: </td><td>{{ tx.to }}</td></tr>

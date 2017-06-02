@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
-# from flask_babel import Babel
+from flask_babel import Babel
 from flask_login import LoginManager
 from flask_uploads import configure_uploads, patch_request_class, UploadSet
 from flask_moment import Moment
@@ -14,7 +14,7 @@ from app import custom_error_pages
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
-# babel = Babel()
+babel = Babel()
 login_manager = LoginManager()
 moment = Moment()
 
@@ -32,7 +32,7 @@ def create_app(config_name):
 
     bootstrap.init_app(app)
     db.init_app(app)
-    # babel.init_app(app)
+    babel.init_app(app)
     moment.init_app(app)
 
     # config flask-login

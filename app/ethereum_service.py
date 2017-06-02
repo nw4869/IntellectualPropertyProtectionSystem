@@ -69,6 +69,34 @@ def submit_file(file):
     return my_contract.transact().proof(file_hash, file.filename, file.description, file.for_sell, price, owner)
 
 
+def new_account(password):
+    return web3.personal.newAccount(password)
+
+
+def get_balance(address):
+    return web3.eth.getBalance(address)
+
+
+def to_ether(wei):
+    return web3.fromWei(wei, 'ether')
+
+
+def to_wei(ether):
+    return web3.toWei(ether, 'ether')
+
+
+def transfer(_from, to, value):
+    return web3.eth.sendTransaction({'from': _from, 'to': to, 'value': int(value)})
+
+
+def is_address(address):
+    return web3.isAddress(address)
+
+
+def estimate_tx_wei(tx):
+    return eth.estimateGas(tx) * eth.gasPrice
+
+
 def traversal_all_contract():
     for i in range(0, eth.blockNumber + 1):
         if eth.getBlockTransactionCount(i) > 0:
