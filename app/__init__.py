@@ -8,6 +8,7 @@ from flask_moment import Moment
 import logging
 from logging import handlers
 
+from web3 import Web3, KeepAliveRPCProvider, contract
 
 from config import config
 from app import custom_error_pages
@@ -20,6 +21,10 @@ moment = Moment()
 
 # upload_photos = None
 upload_files = None
+
+web3 = Web3(KeepAliveRPCProvider())
+MyContract = None
+my_contract = None
 
 from app.models import *
 
@@ -54,6 +59,13 @@ def create_app(config_name):
     global upload_files
     upload_files = UploadSet('files', the_config.FILE_TYPE_ALLOW)
     configure_uploads(app, upload_files)
+
+    # construct ethereum contract
+    contract_data = the_config.contract_data
+    global MyContract
+    MyContract = contract.Contract.factory(web3, contract_name='MyContract', **contract_data)
+    global my_contract
+    my_contract = MyContract(address=contract_data['address'])
 
     with app.app_context():
         db.create_all()

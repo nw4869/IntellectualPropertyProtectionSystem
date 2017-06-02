@@ -1,5 +1,6 @@
 # coding=utf-8
 import os
+import json
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -26,6 +27,20 @@ class Config:
     FILE_TYPE_EXECUTABLES = tuple('so exe dll'.split())
     # FILE_TYPE_ALLOW = FILE_TYPE_TEXT + FILE_TYPE_DOCUMENTS + FILE_TYPE_DATA + FILE_TYPE_ARCHIVES + FILE_TYPE_IMAGES
     FILE_TYPE_ALLOW = ('jpg',)
+
+    contract_conf_path = os.path.join(basedir, 'contract.json')
+    try:
+        with open(contract_conf_path) as f:
+            contract_data = json.load(f)
+        assert contract_data.get('abi')
+        assert any((contract_data.get('bytecode'), contract_data.get('address')))
+    except:
+        raise Exception('failed to load contract config from "contract.json"!')
+
+    @staticmethod
+    def update_contract_config(contract_data):
+        with open(Config.contract_conf_path, 'w') as f:
+            json.dump(contract_data, f, indent=4, sort_keys=True)
 
     @staticmethod
     def init_app(app):
