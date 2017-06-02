@@ -22,7 +22,7 @@ def show_file(hash):
     if file is None:
         abort(404)
 
-    if not file.for_sell and file.owner_user != current_user:
+    if not current_user.is_admin and not file.for_sell and file.owner_user != current_user:
         abort(403)
 
     # TODO fix: file extension
