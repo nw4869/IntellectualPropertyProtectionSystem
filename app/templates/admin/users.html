@@ -45,6 +45,16 @@ hello users admin
                                                 colspan="1" aria-label="邮箱: activate to sort column ascending">
                                                 邮箱
                                             </th>
+
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="区块链地址: activate to sort column ascending">
+                                                区块链地址
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="余额: activate to sort column ascending">
+                                                余额
+                                            </th>
+
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1" aria-label="角色: activate to sort column ascending">
                                                 角色
@@ -57,6 +67,8 @@ hello users admin
                                             <td>{{ user.username }}</td>
                                             <td>{{ user.name }}</td>
                                             <td>{{ user.email }}</td>
+                                            <td>{{ user.address }}</td>
+                                            <td>{{ user.balance }} ether</td>
                                             <td>{{ '管理员' if user.role > 0 else '普通用户' }}</td>
                                         </tr>
                                         {% endfor %}

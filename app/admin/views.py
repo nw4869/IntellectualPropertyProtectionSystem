@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 
 from . import admin
 from app.models import *
+from app import ethereum_service
 
 
 @admin.route('/')
@@ -18,7 +19,11 @@ def index():
 def users():
     if not current_user.is_admin():
         abort(403)
-    return render_template('admin/users.html', users=User.query.all())
+    users = User.query.all()
+    for user in users:
+        user.address = user.wallets[0].address
+        user.balance = ethereum_service.to_ether(ethereum_service.get_balance(user.address))
+    return render_template('admin/users.html', users=users)
 
 
 @admin.route('/files')
