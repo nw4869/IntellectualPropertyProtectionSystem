@@ -24,8 +24,12 @@ def show_file(hash):
     if file is None:
         abort(404)
 
-    if not current_user.is_admin and not file.for_sell and file.owner_user != current_user:
-        abort(403)
+    if not file.for_sell:
+        if not current_user.is_authenticated:
+            abort(403)
+        elif not current_user.is_admin() and file.owner_user != current_user \
+                and file.authorizations.filter_by(authorized_user=current_user).first() is None:
+            abort(403)
 
     # TODO fix: file extension
     file_url = app.upload_files.url(file.hash + '.jpg')
@@ -92,7 +96,8 @@ def authorize(hash, to_user):
     if not ethereum_service.file_is_confirmed(file):
         abort(400, '作品尚未确认，不能授权')
 
-    if Authorization.query.filter(and_(Authorization.file == file, Authorization.authorized_username == to_user)).first():
+    if Authorization.query.filter(
+            and_(Authorization.file == file, Authorization.authorized_username == to_user)).first():
         abort(400, '该用户已经授权')
 
     # 写入以太坊
@@ -102,7 +107,8 @@ def authorize(hash, to_user):
         abort(400, '授权失败')
 
     # 写入数据库
-    authorization = Authorization(file_hash=file.hash, authorizer_username=current_user.username, authorized_username=to_user,
+    authorization = Authorization(file_hash=file.hash, authorizer_username=current_user.username,
+                                  authorized_username=to_user,
                                   txhash=tx_hash)
     db.session.add(authorization)
 

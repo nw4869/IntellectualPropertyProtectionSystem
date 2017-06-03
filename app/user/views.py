@@ -55,7 +55,7 @@ def transactions():
 @login_required
 def authorizations():
     authorizations = Authorization.query.filter(
-        or_(Authorization.authorizer_user == current_user, Authorization.authorizer_user == current_user)).order_by(
+        or_(Authorization.authorizer_user == current_user, Authorization.authorized_user == current_user)).order_by(
         Authorization.time.desc()).all()
     append_confirm_info(authorizations)
     return render_template('user/authorizations.html', authorizations=authorizations)
