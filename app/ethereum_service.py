@@ -17,7 +17,10 @@ def get_block(block_num):
 
 
 def get_transaction(tx):
-    return eth.getTransaction(tx)
+    transaction = eth.getTransaction(tx)
+    transaction['is_confirmed'] = tx_is_confirmed(tx)
+    transaction['confirm_num'] = get_tx_distance(tx)
+    return transaction
 
 
 def get_latest_block():
@@ -34,7 +37,7 @@ def get_block_by_tx(tx):
 
 
 def get_tx_distance(tx):
-    tx = get_transaction(tx)
+    tx = eth.getTransaction(tx)
     if tx['blockNumber'] is None:
         return None
     else:
@@ -99,6 +102,15 @@ def is_address(address):
 
 def estimate_tx_wei(tx):
     return eth.estimateGas(tx) * eth.gasPrice
+
+
+def tx_is_confirmed(tx):
+    distance = get_tx_distance(tx)
+    return distance is not None and distance >= Config.CONFIRM_BLOCK_NUM
+
+
+def file_is_confirmed(file):
+    return tx_is_confirmed(file.txhash) if file and file.txhash else None
 
 
 def traversal_all_contract():

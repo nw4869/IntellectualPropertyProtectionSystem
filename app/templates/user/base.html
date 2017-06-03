@@ -1,4 +1,4 @@
-{% extends "admin/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}
 Admin
@@ -21,7 +21,7 @@ Hello world<br>
 {#    TODO fix drop down active #}
     function active_dropdown(nav_dropdown_active) {
         if (typeof nav_dropdown_active === 'number') {
-            $("#navbar-user").find("> ul > li").each(function (i) {
+            $("#navbar-my").find("> ul > li").each(function (i) {
                 if (i === nav_dropdown_active) {
                     $(this).addClass('active');
                     $(this).children('a').html(function(i, oldHtml) {

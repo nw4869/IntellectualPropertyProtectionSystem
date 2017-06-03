@@ -1,4 +1,4 @@
-{% extends "admin/transactions.html" %}
+{% extends "user/base.html" %}
 
 {% block title %}
 我的交易
@@ -12,8 +12,96 @@
     my transactions
 {% endblock %}
 
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3>交易列表</h3>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example2" class="table table-bordered table-striped dataTable" role="grid"
+                                       aria-describedby="example2_info" style="word-wrap:break-word;word-break:break-all">
+                                    <!-- 标题行 -->
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-sort="ascending"
+                                                aria-label="交易编号: activate to sort column descending">
+                                                交易编号
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="文件哈希: activate to sort column ascending">
+                                                文件哈希
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="出售者: activate to sort column ascending">
+                                                出售者
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="购买者: activate to sort column ascending">
+                                                购买者
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="交易金额: activate to sort column ascending">
+                                                交易金额
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="交易时间: activate to sort column ascending">
+                                                交易时间
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="区块链txhash: activate to sort column ascending">
+                                                区块链txhash
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="状态: activate to sort column ascending">
+                                                状态
+                                            </th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+{#                                    TODO #}
+                                        {% for tx in transactions %}
+                                        <tr role="row" class="{{ 'odd' if loop.index0 % 2 == 0 else 'even'}}">
+                                            <td>{{ tx.id }}</td>
+                                            <td class="col-md-3"><a href="{{ url_for('showcase.show_file', hash=tx.file_hash) }}"> {{ tx.file_hash }}</a></td>
+                                            <td>{{ tx.seller }}</td>
+                                            <td>{{ tx.buyer }}</td>
+                                            <td>{{ tx.money }} ether</td>
+                                            <td>{{ tx.time }}</td>
+                                            <td class="col-md-3"><a href="{{ url_for('ethereum.transaction', tx_hash=tx.txhash) }}"> {{ tx.txhash }}</a></td>
+                                            <td>
+                                            {% if tx.is_confirmed %}
+                                                <span class="text-green">已确认({{ tx.confirm_num }})</span>
+                                            {% elif tx.confirm_num is not none %}
+                                                <span class="text-blue">确认中({{ tx.confirm_num }})</span>
+                                            {% else %}
+                                                <span class="text-yellow">等待确认中</span>
+                                            {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 {% block script_doc_ready %}
     {{ super() }}
-    active_nav(2)
     active_dropdown(3)
 {% endblock %}

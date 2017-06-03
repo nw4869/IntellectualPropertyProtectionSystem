@@ -26,16 +26,31 @@ def users():
 @admin.route('/files')
 @admin_required
 def files():
-    return render_template('admin/files.html', files=File.query.order_by(File.time.desc()).all())
+    files = File.query.order_by(File.time.desc()).all()
+    for file in files:
+        file.is_confirmed = ethereum_service.file_is_confirmed(file)
+        file.confirm_num = ethereum_service.get_tx_distance(file.txhash)
+    return render_template('admin/files.html', files=files)
 
 
 @admin.route('/authorizations')
 @admin_required
 def authorizations():
-    return render_template('admin/authorizations.html', authorizations=Authorization.query.all())
+    authorizations = Authorization.query.all()
+    append_confirm_info(authorizations)
+    return render_template('admin/authorizations.html', authorizations=authorizations)
 
 
 @admin.route('/transactions')
 @admin_required
 def transactions():
-    return render_template('admin/transactions.html', transactions=Transaction.query.all())
+    transactions = Transaction.query.all()
+    append_confirm_info(transactions)
+    return render_template('admin/transactions.html', transactions=transactions)
+
+
+def append_confirm_info(_list):
+    for item in _list:
+        item.is_confirmed = ethereum_service.tx_is_confirmed(item.txhash)
+        item.confirm_num = ethereum_service.get_tx_distance(item.txhash)
+    return _list

@@ -65,6 +65,10 @@
                                                 colspan="1" aria-label="区块链tx: activate to sort column ascending">
                                                 区块链tx
                                             </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="状态: activate to sort column ascending">
+                                                状态
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -78,6 +82,15 @@
                                             <td>{{ file.for_sell }}</td>
                                             <td>{{ file.price }}</td>
                                             <td class="col-md-3"><a href="{{ url_for('ethereum.transaction', tx_hash=file.txhash) }}"> {{ file.txhash }}</a></td>
+                                            <td>
+                                            {% if file.is_confirmed %}
+                                                <span class="text-green">已确认({{ file.confirm_num }})</span>
+                                            {% elif file.confirm_num is not none %}
+                                                <span class="text-blue">确认中({{ file.confirm_num }})</span>
+                                            {% else %}
+                                                <span class="text-yellow">等待确认中</span>
+                                            {% endif %}
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

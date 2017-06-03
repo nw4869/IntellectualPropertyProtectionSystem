@@ -1,4 +1,4 @@
-from flask import render_template, abort, current_app, request
+from flask import render_template, abort, current_app, request, redirect, url_for
 from flask_login import login_required, current_user
 from sqlalchemy import desc, and_
 
@@ -29,6 +29,8 @@ def show_file(hash):
 
     # TODO fix: file extension
     file_url = app.upload_files.url(file.hash + '.jpg')
+    file.is_confirmed = ethereum_service.file_is_confirmed(file)
+    file.confirm_num = ethereum_service.get_tx_distance(file.txhash)
     return render_template('showcase/file.html', file=file, file_url=file_url)
 
 
@@ -39,6 +41,9 @@ def purchase(hash):
     if file is None:
         abort(404)
 
+    if not ethereum_service.file_is_confirmed(file):
+        abort(400, '作品尚未确认，不能购买')
+
     # 不能购买自己的
     if file.owner_user == current_user:
         abort(400, '不能购买自己的作品')
@@ -48,7 +53,7 @@ def purchase(hash):
 
     # 不能购买未出售的
     if not file.for_sell:
-        abort(403, '改作品未出售')
+        abort(403, '该作品未出售')
 
     # 检查余额
     balance = ethereum_service.to_ether(ethereum_service.get_balance(current_user.wallets[0].address))
@@ -66,4 +71,4 @@ def purchase(hash):
                               txhash=tx_hash)
     db.session.add(transaction)
 
-    return render_template('user/transactions.html')
+    return redirect(url_for('user.transactions'))

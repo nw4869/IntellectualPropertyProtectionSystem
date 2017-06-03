@@ -61,6 +61,10 @@ hello transactions admin
                                                 colspan="1" aria-label="区块链txhash: activate to sort column ascending">
                                                 区块链txhash
                                             </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="状态: activate to sort column ascending">
+                                                状态
+                                            </th>
                                        </tr>
                                     </thead>
                                     <tbody>
@@ -74,6 +78,15 @@ hello transactions admin
                                             <td>{{ tx.money }} ether</td>
                                             <td>{{ tx.time }}</td>
                                             <td class="col-md-3"><a href="{{ url_for('ethereum.transaction', tx_hash=tx.txhash) }}"> {{ tx.txhash }}</a></td>
+                                            <td>
+                                            {% if tx.is_confirmed %}
+                                                <span class="text-green">已确认({{ tx.confirm_num }})</span>
+                                            {% elif tx.confirm_num is not none %}
+                                                <span class="text-blue">确认中({{ tx.confirm_num }})</span>
+                                            {% else %}
+                                                <span class="text-yellow">等待确认中</span>
+                                            {% endif %}
+                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

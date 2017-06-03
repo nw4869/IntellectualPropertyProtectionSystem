@@ -28,6 +28,8 @@ class Config:
     # FILE_TYPE_ALLOW = FILE_TYPE_TEXT + FILE_TYPE_DOCUMENTS + FILE_TYPE_DATA + FILE_TYPE_ARCHIVES + FILE_TYPE_IMAGES
     FILE_TYPE_ALLOW = ('jpg',)
 
+    # ethereum
+    CONFIRM_BLOCK_NUM = 10
     contract_conf_path = os.path.join(basedir, 'contract.json')
     try:
         with open(contract_conf_path) as f:

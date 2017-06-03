@@ -223,13 +223,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="user-body">
                   <div class="row">
                     <div class="col-xs-4 text-center">
-                      <a href="#">我的作品</a>
+                      <a href="{{ url_for('user.files') }}">我的作品</a>
                     </div>
                     <div class="col-xs-4 text-center">
-                      <a href="#">我的交易</a>
+                      <a href="{{ url_for('user.transactions') }}">我的交易</a>
                     </div>
                     <div class="col-xs-4 text-center">
-                      <a href="#">我的授权</a>
+                      <a href="{{ url_for('user.authorizations') }}">我的授权</a>
                     </div>
                   </div>
                   <!-- /.row -->
@@ -237,7 +237,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- Menu Footer-->
                 <li class="user-footer">
                   <div class="pull-left">
-                    <a href="{{ url_for('user.index') }}" class="btn btn-default btn-flat">个人中心</a>
+                    <a href="{{ url_for('user.wallet') }}" class="btn btn-default btn-flat">我的钱包</a>
                   </div>
                   <div class="pull-right">
                     <a href="{{ url_for('auth.logout') }}" class="btn btn-default btn-flat">登出</a>

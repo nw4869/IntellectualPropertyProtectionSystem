@@ -34,26 +34,35 @@ def wallet():
 @user.route('/files')
 @login_required
 def files():
-    return render_template('user/files.html', files=current_user.files)
+    files = current_user.files.order_by(File.time.desc()).all()
+    for file in files:
+        file.is_confirmed = ethereum_service.file_is_confirmed(file)
+        file.confirm_num = ethereum_service.get_tx_distance(file.txhash)
+    return render_template('user/files.html', files=files)
 
 
 @user.route('/transactions')
 @login_required
 def transactions():
-    return render_template(
-        'user/transactions.html',
-        transactions=Transaction.query.filter(
-            or_(Transaction.buyer_user == current_user, Transaction.seller_user == current_user))
-            .order_by(Transaction.time.desc()).all()
-    )
+    transactions = Transaction.query.filter(
+        or_(Transaction.buyer_user == current_user, Transaction.seller_user == current_user)).order_by(
+        Transaction.time.desc()).all()
+    append_confirm_info(transactions)
+    return render_template('user/transactions.html', transactions=transactions)
 
 
 @user.route('/authorizations')
 @login_required
 def authorizations():
-    return render_template(
-        'user/authorizations.html',
-        authorizations=Authorization.query.filter(
-            or_(Authorization.authorizer_user == current_user, Authorization.authorizer_user == current_user))
-            .order_by(Authorization.time.desc()).all()
-    )
+    authorizations = Authorization.query.filter(
+        or_(Authorization.authorizer_user == current_user, Authorization.authorizer_user == current_user)).order_by(
+        Authorization.time.desc()).all()
+    append_confirm_info(authorizations)
+    return render_template('user/authorizations.html', authorizations=authorizations)
+
+
+def append_confirm_info(_list):
+    for item in _list:
+        item.is_confirmed = ethereum_service.tx_is_confirmed(item.txhash)
+        item.confirm_num = ethereum_service.get_tx_distance(item.txhash)
+    return _list

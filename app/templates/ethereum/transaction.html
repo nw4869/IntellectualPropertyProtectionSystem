@@ -29,9 +29,15 @@
                         <td>
                             {% if tx.blockNumber is not none %}
                                 <a href="{{ url_for('ethereum.block', block_num=tx.blockNumber) }}">{{ tx.blockNumber }}</a>
-                                 (区块确认数：{{ tx.confirmations }})
+                                 (
+                                {% if tx.is_confirmed %}
+                                    <span class="text-green">已确认</span>
+                                {% else %}
+                                    <span class="text-blue">确认中</span>
+                                {% endif %}
+                                ，区块确认数：{{ tx.confirmations }})
                             {% else %}
-                                等待中
+                                <span class="text-yellow">等待中</span>
                             {% endif %}
                         </td>
                     </tr>
