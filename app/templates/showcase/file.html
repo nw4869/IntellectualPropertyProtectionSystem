@@ -48,7 +48,7 @@
                         <a href="{{ url_for('ethereum.transaction', tx_hash=file.txhash) }}">查看区块链信息</a>
                     </p>
 
-                    {% if file.for_sell %}
+                    {% if file.for_sell and file.owner != current_user.username %}
                         <div class="pull-right">
                             <p style="color: #F40">售价：{{ file.price }} (以太)</p>
                             <form action="{{ url_for('.purchase', hash=file.hash) if file.is_confirmed else 'javascript:void(0);'}}" method="post">

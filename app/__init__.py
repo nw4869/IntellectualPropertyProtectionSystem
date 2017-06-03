@@ -12,7 +12,7 @@ from logging import handlers
 from web3 import Web3, KeepAliveRPCProvider, contract
 
 from config import config
-from app import custom_error_pages
+from app import custom_error_pages, errors
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
@@ -97,6 +97,8 @@ def create_app(config_name):
     app.register_error_handler(404, custom_error_pages.page_not_found)
     # app.error_handler_spec[None][500] = custom_error_pages.internal_server_error
     app.register_error_handler(500, custom_error_pages.internal_server_error)
+    app.register_error_handler(errors.BalanceException, custom_error_pages.balance_error)
+    app.register_error_handler(errors.EthereumException, custom_error_pages.ethereum_error)
 
     print('app created')
 

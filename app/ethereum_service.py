@@ -2,10 +2,7 @@ from time import sleep
 from binascii import unhexlify
 from app import web3, MyContract, my_contract
 from config import Config
-
-
-class EthereumException(Exception):
-    pass
+from app.errors import *
 
 
 eth = web3.eth
@@ -50,11 +47,19 @@ def submit_file(user, file):
     file_hash = bytearray(unhexlify(file.hash))
     owner = "0x0000000000000000000000000000000000000000"
 
+    # unlock
+    web3.personal.unlockAccount(address, '4869', 0)
+
     gas_limit = web3.eth.getBlock('latest')['gasLimit']
     gas_estimate = my_contract.estimateGas({'from': address}).proof(file_hash, file.filename, file.description, file.for_sell, price, owner)
 
     if gas_estimate > gas_limit * 9 / 10:
-        raise EthereumException
+        raise EthereumException()
+
+    balance = get_balance(address)
+    value = gas_estimate * eth.gasPrice
+    if balance < value:
+        raise BalanceException(to_ether(value), to_ether(balance))
 
     return my_contract.transact({'from': address}).proof(file_hash, file.filename, file.description, file.for_sell, price, owner)
 
@@ -72,7 +77,10 @@ def purchase(user, file):
     gas_estimate = my_contract.estimateGas({'from': address, 'value': price}).purchase(file_hash)
 
     if gas_estimate > gas_limit * 9 / 10:
-        raise EthereumException
+        raise EthereumException()
+
+    if get_balance(address) < gas_estimate * eth.gasPrice:
+        raise BalanceException
 
     return my_contract.transact({'from': address, 'value': price}).purchase(file_hash)
 
@@ -89,7 +97,10 @@ def authorize(from_user, to_user, file):
     gas_estimate = my_contract.estimateGas({'from': from_address}).authorize(file_hash, to_address)
 
     if gas_estimate > gas_limit * 9 / 10:
-        raise EthereumException
+        raise EthereumException()
+
+    if get_balance(from_address) < gas_estimate * eth.gasPrice:
+        raise BalanceException
 
     return my_contract.transact({'from': from_address}).authorize(file_hash, to_address)
 
@@ -106,7 +117,10 @@ def transfer(from_user, to_user, file):
     gas_estimate = my_contract.estimateGas({'from': from_address}).transfer(file_hash, to_address)
 
     if gas_estimate > gas_limit * 9 / 10:
-        raise EthereumException
+        raise EthereumException()
+
+    if get_balance(from_address) < gas_estimate * eth.gasPrice:
+        raise BalanceException
 
     return my_contract.transact({'from': from_address}).transfer(file_hash, to_address)
 

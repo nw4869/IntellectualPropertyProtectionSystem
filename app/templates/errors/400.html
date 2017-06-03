@@ -16,7 +16,11 @@
           <h3><i class="fa fa-warning text-yellow"></i>请求错误</h3>
 
           <p>
-              {{ e.description }}
+              {% if e.description %}
+                {{ e.description }}
+              {% else %}
+                  请求错误
+              {% endif %}
           </p>
             <p>
              <a href="{{ url_for('main.index') }}">返回首页</a> <a href="javascript:history.back();">返回上一页</a>

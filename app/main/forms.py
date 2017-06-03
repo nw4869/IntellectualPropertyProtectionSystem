@@ -34,11 +34,10 @@ class UploadForm(FlaskForm):
                 raise ValidationError('作品已有人上传')
 
     def validate_price(self, price_field):
-        if self.for_sell.data:
-            if price_field.data is None:
-                raise ValidationError('请输入价钱')
-            else:
-                NumberRange(min=0, max=sys.maxsize)(self, price_field)
+        if price_field.data is None and self.for_sell.data:
+            raise ValidationError('请输入价钱')
+        else:
+            NumberRange(min=0, max=sys.maxsize)(self, price_field)
         # if not current_user.wallets:
         #     raise ValidationError('没有以太坊钱包')
         # wallet = current_user.wallets[0]

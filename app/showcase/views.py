@@ -4,6 +4,7 @@ from sqlalchemy import desc, and_
 
 import app
 from app import db
+from app.errors import EthereumException
 from . import showcase
 from app import ethereum_service
 from app.models import File, Transaction, Authorization, User
@@ -26,10 +27,13 @@ def show_file(hash):
 
     if not file.for_sell:
         if not current_user.is_authenticated:
-            abort(403)
-        elif not current_user.is_admin() and file.owner_user != current_user \
-                and file.authorizations.filter_by(authorized_user=current_user).first() is None:
-            abort(403)
+            abort(403, '请先登录')
+        elif not current_user.is_admin() and file.owner_user != current_user:
+            authorization = file.authorizations.filter_by(authorized_user=current_user).first()
+            if authorization is None:
+                abort(403)
+            elif not ethereum_service.tx_is_confirmed(authorization.txhash):
+                abort(403, '请等待授权完成')
 
     # TODO fix: file extension
     file_url = app.upload_files.url(file.hash + '.jpg')
@@ -65,10 +69,7 @@ def purchase(hash):
         abort(400, '余额不足')
 
     # 写入以太坊
-    try:
-        tx_hash = ethereum_service.purchase(current_user, file)
-    except ethereum_service.EthereumException:
-        abort(400, '购买失败')
+    tx_hash = ethereum_service.purchase(current_user, file)
 
     # 写入数据库
     transaction = Transaction(seller=file.owner, buyer=current_user.username, file_hash=file.hash, money=file.price,
@@ -101,10 +102,7 @@ def authorize(hash, to_user):
         abort(400, '该用户已经授权')
 
     # 写入以太坊
-    try:
-        tx_hash = ethereum_service.authorize(current_user, to_user_entity, file)
-    except ethereum_service.EthereumException:
-        abort(400, '授权失败')
+    tx_hash = ethereum_service.authorize(current_user, to_user_entity, file)
 
     # 写入数据库
     authorization = Authorization(file_hash=file.hash, authorizer_username=current_user.username,
