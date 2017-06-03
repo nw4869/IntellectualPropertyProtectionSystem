@@ -1,3 +1,5 @@
+import uuid
+
 from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user, login_required
 
@@ -38,8 +40,9 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data, password=form.password.data, name=form.name.data)
         db.session.add(user)
-        address = new_account(form.password.data)
-        wallet = Wallet(address=address, key='TODO', owner_user=user)
+        key_origin = uuid.uuid4().hex
+        address = new_account(key_origin)
+        wallet = Wallet(address=address, key_origin=key_origin, owner_user=user)
         db.session.add(wallet)
         flash('注册成功, 请登录', 'success')
         return redirect(url_for('auth.login'))

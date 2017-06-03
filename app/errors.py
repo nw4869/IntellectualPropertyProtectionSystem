@@ -7,7 +7,7 @@ class EthereumException(Exception):
 
 class BalanceException(EthereumException):
     def __init__(self, value=None, balance=None):
-        if balance and value:
+        if balance is not None and value is not None:
             self.description = '余额不足：%s ether < %s ether' % (balance, value)
         elif value:
             self.description = '余额不足： < %s ether' % value

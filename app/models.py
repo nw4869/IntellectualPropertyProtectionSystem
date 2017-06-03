@@ -1,8 +1,13 @@
+import hashlib
+
 from flask_login import UserMixin, AnonymousUserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import login_manager
 from . import db
+from config import get_config
+from Crypto.Cipher import AES
+import binascii
 
 
 class User(db.Model, UserMixin):
@@ -115,3 +120,13 @@ class Wallet(db.Model):
     address = db.Column(db.String(255), nullable=False)
     key = db.Column(db.String(255), nullable=False)
     owner = db.Column(db.String(255), db.ForeignKey('users.username'), nullable=False)
+
+    @property
+    def key_origin(self):
+        secret_key = hashlib.sha256(get_config().SECRET_KEY.encode()).digest()[16:48]
+        return AES.new(secret_key).decrypt(binascii.unhexlify(self.key)).decode()
+
+    @key_origin.setter
+    def key_origin(self, key):
+        secret_key = hashlib.sha256(get_config().SECRET_KEY.encode()).digest()[16:48]
+        self.key = binascii.hexlify(AES.new(secret_key).encrypt(key))

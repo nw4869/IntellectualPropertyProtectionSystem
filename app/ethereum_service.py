@@ -48,7 +48,7 @@ def submit_file(user, file):
     owner = "0x0000000000000000000000000000000000000000"
 
     # unlock
-    web3.personal.unlockAccount(address, '4869', 0)
+    web3.personal.unlockAccount(address, user.wallets[0].key_origin, 0)
 
     gas_limit = web3.eth.getBlock('latest')['gasLimit']
     gas_estimate = my_contract.estimateGas({'from': address}).proof(file_hash, file.filename, file.description, file.for_sell, price, owner)
@@ -71,7 +71,7 @@ def purchase(user, file):
     file_hash = bytearray(unhexlify(file.hash))
 
     # unlock
-    web3.personal.unlockAccount(address, '4869', 0)
+    web3.personal.unlockAccount(address, user.wallets[0].key_origin, 0)
 
     gas_limit = web3.eth.getBlock('latest')['gasLimit']
     gas_estimate = my_contract.estimateGas({'from': address, 'value': price}).purchase(file_hash)
@@ -91,7 +91,7 @@ def authorize(from_user, to_user, file):
     file_hash = bytearray(unhexlify(file.hash))
 
     # unlock
-    web3.personal.unlockAccount(from_address, '4869', 0)
+    web3.personal.unlockAccount(from_address, from_address.wallets[0].key_origin, 0)
 
     gas_limit = web3.eth.getBlock('latest')['gasLimit']
     gas_estimate = my_contract.estimateGas({'from': from_address}).authorize(file_hash, to_address)

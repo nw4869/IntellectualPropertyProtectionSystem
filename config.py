@@ -94,3 +94,7 @@ config = {
     'default': DevelopmentConfig
     # 'default': ProductionConfig
 }
+
+
+def get_config():
+    return config[os.getenv('FLASK_CONFIG') or 'default']
