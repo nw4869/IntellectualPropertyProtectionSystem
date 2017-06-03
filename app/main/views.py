@@ -39,7 +39,7 @@ def upload():
         # file.owner_user = current_user
         file.owner = current_user.username
         # file.time = datetime.now()
-        file.txhash = submit_file(file)
+        file.txhash = submit_file(current_user, file)
         db.session.add(file)
         # print(file)
 

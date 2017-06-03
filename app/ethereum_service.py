@@ -44,18 +44,19 @@ def get_tx_distance(tx):
         return get_latest_block_number() - tx['blockNumber']
 
 
-def submit_file(file):
+def submit_file(user, file):
+    address = user.wallets[0].address
     price = web3.toWei(file.price, "ether")
     file_hash = bytearray(unhexlify(file.hash))
     owner = "0x0000000000000000000000000000000000000000"
 
     gas_limit = web3.eth.getBlock('latest')['gasLimit']
-    gas_estimate = my_contract.estimateGas().proof(file_hash, file.filename, file.description, file.for_sell, price, owner)
+    gas_estimate = my_contract.estimateGas({'from': address}).proof(file_hash, file.filename, file.description, file.for_sell, price, owner)
 
     if gas_estimate > gas_limit * 9 / 10:
         raise EthereumException
 
-    return my_contract.transact().proof(file_hash, file.filename, file.description, file.for_sell, price, owner)
+    return my_contract.transact({'from': address}).proof(file_hash, file.filename, file.description, file.for_sell, price, owner)
 
 
 def purchase(user, file):
