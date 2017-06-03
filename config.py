@@ -58,10 +58,12 @@ class DevelopmentConfig(Config):
     # 加载bootstrap本地css与js文件
     BOOTSTRAP_SERVE_LOCAL = True
 
+    ENABLE_DEBUG_TOOLBAR = False
+
     @staticmethod
     def init_app(app):
         # init flask debug toolbar
-        if DevelopmentConfig.DEBUG:
+        if DevelopmentConfig.DEBUG and DevelopmentConfig.ENABLE_DEBUG_TOOLBAR:
             try:
                 from flask_debugtoolbar import DebugToolbarExtension
                 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False

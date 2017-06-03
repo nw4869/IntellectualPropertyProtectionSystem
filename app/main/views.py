@@ -31,8 +31,8 @@ def upload():
         price = 0
     if form.validate_on_submit():
         hash = keccak_256(form.file.data.stream.read()).hexdigest()
-        filename = form.filename.data
-        description = form.description.data
+        filename = form.filename.data.encode('utf-8')
+        description = form.description.data.encode('utf-8')
         for_sell = form.for_sell.data
 
         file = File(hash=hash, filename=filename, description=description, for_sell=for_sell, price=price)
