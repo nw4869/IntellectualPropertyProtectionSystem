@@ -20,10 +20,10 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <div class="row row-eq-height">
+                <div class="row row-eq-height" >
                     {% for file in files %}
                         {#                        {% for i in range(3) %}#}
-                        <div class="col-md-3">
+                        <div class="col-md-3" style="">
                             <div class="box box-widget">
                                 <div class="box-header with-border">
                                     {#                            <a href="{{ url_for('showcase.show_file', hash=file.hash) }}">#}
@@ -38,14 +38,14 @@
                                 </div>
                                 <div class="box-body">
                                     <a href="{{ url_for('showcase.show_file', hash=file.hash) }}">
-                                        <img class="img-responsive pad" style="margin: auto" src="{{ file.url }}"
+                                        <img class="img-responsive " style="height: 160px; margin: auto" src="{{ file.url }}"
                                              alt="Photo">
                                     </a>
                                 </div>
 
-                                <div class="box-footer">
-                                    {{ file.description }}
-                                </div>
+{#                                <div class="box-footer">#}
+{#                                    {{ file.description }}#}
+{#                                </div>#}
                             </div>
                         </div>
                         {#                        {% endfor %}#}

@@ -28,7 +28,7 @@ def login():
 @auth.route('/logout')
 def logout():
     logout_user()
-    flash('登出成功', 'success')
+    # flash('登出成功', 'success')
     return redirect(url_for('main.index'))
 
 
