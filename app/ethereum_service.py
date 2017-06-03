@@ -76,6 +76,40 @@ def purchase(user, file):
     return my_contract.transact({'from': address, 'value': price}).purchase(file_hash)
 
 
+def authorize(from_user, to_user, file):
+    from_address = from_user.wallets[0].address
+    to_address = to_user.wallets[0].address
+    file_hash = bytearray(unhexlify(file.hash))
+
+    # unlock
+    web3.personal.unlockAccount(from_address, '4869', 0)
+
+    gas_limit = web3.eth.getBlock('latest')['gasLimit']
+    gas_estimate = my_contract.estimateGas({'from': from_address}).authorize(file_hash, to_address)
+
+    if gas_estimate > gas_limit * 9 / 10:
+        raise EthereumException
+
+    return my_contract.transact({'from': from_address}).authorize(file_hash, to_address)
+
+
+def transfer(from_user, to_user, file):
+    from_address = from_user.wallets[0].address
+    to_address = to_user.wallets[0].address
+    file_hash = bytearray(unhexlify(file.hash))
+
+    # unlock
+    web3.personal.unlockAccount(from_address, '4869', 0)
+
+    gas_limit = web3.eth.getBlock('latest')['gasLimit']
+    gas_estimate = my_contract.estimateGas({'from': from_address}).transfer(file_hash, to_address)
+
+    if gas_estimate > gas_limit * 9 / 10:
+        raise EthereumException
+
+    return my_contract.transact({'from': from_address}).transfer(file_hash, to_address)
+
+
 def new_account(password):
     return web3.personal.newAccount(password)
 
@@ -92,7 +126,7 @@ def to_wei(ether):
     return web3.toWei(ether, 'ether')
 
 
-def transfer(_from, to, value):
+def transfer_wei(_from, to, value):
     return web3.eth.sendTransaction({'from': _from, 'to': to, 'value': int(value)})
 
 

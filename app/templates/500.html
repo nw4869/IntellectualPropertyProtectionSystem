@@ -17,8 +17,14 @@
           <h3><i class="fa fa-warning text-red"></i> Oops! Something went wrong.</h3>
 
           <p>
-            We will work on fixing that right away.
-            Meanwhile, you may <a href="/">return to dashboard</a> or try using the search form.
+              {% if e.description %}
+                {{ e.description }}
+              {% else %}
+                 服务器发生了一个错误
+              {% endif %}
+          </p>
+          <p>
+             <a href="{{ url_for('main.index') }}">返回首页</a> <a href="javascript:history.back();">返回上一页</a>
           </p>
 
 {#          <form class="search-form">#}

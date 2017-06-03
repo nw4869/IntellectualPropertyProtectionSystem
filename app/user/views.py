@@ -24,7 +24,7 @@ def wallet():
     form = TransferForm()
     if form.validate_on_submit():
         money = ethereum_service.to_wei(form.value.data)
-        tx_hash = ethereum_service.transfer(_from=user_wallet.address, to=form.to.data, value=money)
+        tx_hash = ethereum_service.transfer_wei(_from=user_wallet.address, to=form.to.data, value=money)
         form = TransferForm()
         return render_template('user/wallet.html', wallet=user_wallet, tx_hash=tx_hash, form=form)
 

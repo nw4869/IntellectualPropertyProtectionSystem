@@ -27,8 +27,8 @@ hello authorizations admin
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <table id="example2" class="table table-bordered table-hover dataTable" role="grid"
-                                       aria-describedby="example2_info">
+                                <table id="example2" class="table table-bordered table-striped dataTable" role="grid"
+                                       aria-describedby="example2_info" style="word-wrap:break-word;word-break:break-all">
                                     <!-- 标题行 -->
                                     <thead>
                                         <tr role="row">
@@ -49,11 +49,7 @@ hello authorizations admin
                                                 colspan="1" aria-label="被授予者: activate to sort column ascending">
                                                 被授予者
                                             </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                colspan="1" aria-label="授权类型: activate to sort column ascending">
-                                                授权类型
-                                            </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1" aria-label="授权时间: activate to sort column ascending">
                                                 授权时间
                                             </th>
@@ -61,18 +57,32 @@ hello authorizations admin
                                                 colspan="1" aria-label="区块链txhash: activate to sort column ascending">
                                                 区块链txhash
                                             </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="状态: activate to sort column ascending">
+                                                状态
+                                            </th>
                                        </tr>
                                     </thead>
                                     <tbody>
-{#                                    TODO #}
-{#                                        {% for user in users %}#}
-{#                                        <tr role="row" class="{{ 'odd' if loop.index0 % 2 == 0 else 'even'}}">#}
-{#                                            <td>{{ user.username }}</td>#}
-{#                                            <td>{{ user.name }}</td>#}
-{#                                            <td>{{ user.email }}</td>#}
-{#                                            <td>{{ '管理员' if user.role > 0 else '普通用户' }}</td>#}
-{#                                        </tr>#}
-{#                                        {% endfor %}#}
+                                        {% for authorization in authorizations %}
+                                        <tr role="row" class="{{ 'odd' if loop.index0 % 2 == 0 else 'even'}}">
+                                            <td>{{ authorization.id }}</td>
+                                            <td class="col-md-3"><a href="{{ url_for('showcase.show_file', hash=authorization.file_hash) }}"> {{ authorization.file_hash }}</a></td>
+                                            <td>{{ authorization.authorizer_username }}</td>
+                                            <td>{{ authorization.authorized_username }}</td>
+                                            <td>{{ authorization.time }}</td>
+                                            <td class="col-md-3"><a href="{{ url_for('ethereum.transaction', tx_hash=authorization.txhash) }}"> {{ authorization.txhash }}</a></td>
+                                            <td>
+                                            {% if authorization.is_confirmed %}
+                                                <span class="text-green">已确认({{ authorization.confirm_num }})</span>
+                                            {% elif authorization.confirm_num is not none %}
+                                                <span class="text-blue">确认中({{ authorization.confirm_num }})</span>
+                                            {% else %}
+                                                <span class="text-yellow">等待确认中</span>
+                                            {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

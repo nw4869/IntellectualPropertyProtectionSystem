@@ -16,8 +16,14 @@
           <h3><i class="fa fa-warning text-yellow"></i>网页不存在 </h3>
 
           <p>
-            We could not find the page you were looking for.
-            Meanwhile, you may <a href="/">return home</a> or try using the search form.
+              {% if e.description %}
+                {{ e.description }}
+              {% else %}
+                找不到页面
+              {% endif %}
+          </p>
+          <p>
+             <a href="{{ url_for('main.index') }}">返回首页</a> <a href="javascript:history.back();">返回上一页</a>
           </p>
 
 {#          <form class="search-form">#}

@@ -5,6 +5,7 @@ from flask_babel import Babel
 from flask_login import LoginManager
 from flask_uploads import configure_uploads, patch_request_class, UploadSet
 from flask_moment import Moment
+from flask_jsglue import JSGlue
 import logging
 from logging import handlers
 
@@ -18,6 +19,7 @@ db = SQLAlchemy()
 babel = Babel()
 login_manager = LoginManager()
 moment = Moment()
+jsglue = JSGlue()
 
 # upload_photos = None
 upload_files = None
@@ -39,6 +41,7 @@ def create_app(config_name):
     db.init_app(app)
     babel.init_app(app)
     moment.init_app(app)
+    jsglue.init_app(app)
 
     # config flask-login
     login_manager.init_app(app)

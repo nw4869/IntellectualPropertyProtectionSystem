@@ -92,8 +92,13 @@
                                             </td>
                                             <td>
                                                 <div style="margin: auto">
-                                                    <button name="authorize" type="submit" class="btn btn-primary btn-sm {{ 'disabled' if not file.is_confirmed }}">授权</button>
-                                                    <button name="transfer" type="submit" class="btn btn-primary btn-sm {{ 'disabled' if not file.is_confirmed }}" style="margin-left: 5px">转让</button>
+                                                    <button name="authorize" type="button" class="btn btn-primary btn-sm {{ 'disabled' if not file.is_confirmed }}"
+                                                            data-toggle="modal" data-target="#authorizeModal"
+                                                            data-hash="{{ file.hash }}"
+                                                            data-filename="{{ file.filename }}"
+                                                            data-description="{{ file.description }}">授权</button>
+                                                    <button name="transfer" type="submit" class="btn btn-primary btn-sm {{ 'disabled' if not file.is_confirmed }}" style="margin-left: 5px"
+                                                            data-toggle="modal" data-target="#transferModal">转让</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -109,6 +114,51 @@
         </div>
     </div>
 
+        <div class="modal fade" role="dialog" id="authorizeModal">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">作品授权</h4>
+              </div>
+              <div class="modal-body">
+                  <label>文件信息:</label>
+                  <div class="box no-border">
+                      <div class="box-body no-padding">
+                          <table class="table" style="font-size: medium; word-wrap:break-word;word-break:break-all; ">
+                              <tbody>
+                              <tr>
+                                  <td>文件哈希值</td> <td id="modal_info_hash" class="col-md-9">4127fbc6e254e6dc02ec34f32c479c91a0b2e66de931e44dcd1ab98d64331043</td>
+                              </tr>
+                              <tr>
+                                  <td>文件名</td> <td id="modal_info_filename">FILLME</td>
+                              </tr>
+                              <tr>
+                                  <td>文件描述</td> <td id="moal_info_description">FILLME</td>
+                              </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+                  <form id="authorize_form" method="post">
+                      <input type="hidden" id="hash">
+                      <div class="form-group">
+                          <label for="to_user" class="control-label">被授权者的用户名:</label>
+                          <input type="text" class="form-control" id="to_user">
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="on_authorize_submit($('#hash').val(), $('#to_user').val())">确认</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+
 {% endblock %}
 
 {% block script_doc_ready %}
@@ -116,4 +166,33 @@
     {{ super() }}
     active_nav(2)
     active_dropdown(1)
+
+{#    <script>#}
+    $('#authorizeModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var hash = button.data('hash');
+        var filename = button.data('filename');
+        var description = button.data('description');
+
+        var modal = $(this);
+        modal.find('#modal_info_hash').text(hash);
+        modal.find('#modal_info_filename').text(filename);
+        modal.find('#moal_info_description').text(description);
+
+        modal.find('#hash').val(hash);
+    });
+
+
+{#    </script>#}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="application/javascript">
+        function on_authorize_submit(hash, to_user) {
+            var authorizeForm = $('#authorize_form');
+            authorizeForm.attr('action', Flask.url_for('showcase.authorize', {hash: hash, to_user: to_user}));
+            authorizeForm.submit();
+        }
+    </script>
 {% endblock %}
