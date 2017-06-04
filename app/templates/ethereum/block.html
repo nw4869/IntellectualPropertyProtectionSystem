@@ -27,9 +27,10 @@
 {#                    <tr><td>timestamp: </td><td>{{ block.timestamp }}</td></tr>#}
                     <tr><td>timestamp: </td>
                         <td>
-                            {% if block.timestamp is not none %}
-                                {{ moment(block.timestamp).format('YYYY-MM-DD HH:mm:ss')  }}
-                            {% endif %}
+{#                            {% if block.timestamp is not none %}#}
+{#                                {{ moment(block.timestamp).format('YYYY-MM-DD HH:mm:ss')  }}#}
+{#                            {% endif %}#}
+                            {{ block.timestamp }}
                         </td>
                     </tr>
                     <tr><td>transactions: </td><td>{{ block.transactions | length }}</td></tr>
