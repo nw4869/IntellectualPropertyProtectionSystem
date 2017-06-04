@@ -91,7 +91,7 @@ def authorize(from_user, to_user, file):
     file_hash = bytearray(unhexlify(file.hash))
 
     # unlock
-    web3.personal.unlockAccount(from_address, from_address.wallets[0].key_origin, 0)
+    web3.personal.unlockAccount(from_address, from_user.wallets[0].key_origin, 0)
 
     gas_limit = web3.eth.getBlock('latest')['gasLimit']
     gas_estimate = my_contract.estimateGas({'from': from_address}).authorize(file_hash, to_address)

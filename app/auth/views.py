@@ -38,7 +38,8 @@ def register():
     if request.args.get('next'):
         form.next.data = request.args.get('next')
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data, password=form.password.data, name=form.name.data)
+        role = 1 if User.query.first() is None else 0
+        user = User(username=form.username.data, email=form.email.data, password=form.password.data, name=form.name.data, role=role)
         db.session.add(user)
         key_origin = uuid.uuid4().hex
         address = new_account(key_origin)
