@@ -61,6 +61,16 @@ def authorizations():
     return render_template('user/authorizations.html', authorizations=authorizations)
 
 
+@user.route('/transfers')
+@login_required
+def transfers():
+    transfers = Transfer.query.filter(
+        or_(Transfer.from_user == current_user, Transfer.to_user == current_user)).order_by(
+        Transfer.time.desc()).all()
+    append_confirm_info(transfers)
+    return render_template('user/transfers.html', transfers=transfers)
+
+
 def append_confirm_info(_list):
     for item in _list:
         item.is_confirmed = ethereum_service.tx_is_confirmed(item.txhash)

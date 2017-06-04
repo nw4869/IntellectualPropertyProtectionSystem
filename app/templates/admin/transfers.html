@@ -1,15 +1,15 @@
-{% extends "user/base.html" %}
+{% extends "admin/base.html" %}
 
 {% block title %}
-我的转让
+授权管理
 {% endblock %}
 
 {% block content_header_title %}
-我的转让
+授权管理
 {% endblock %}
 
 {% block content_header_description %}
-    my transfers
+hello authorizations admin
 {% endblock %}
 
 {% block content %}
@@ -17,7 +17,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3>转让列表</h3>
+                    <h3>授权列表</h3>
                 </div>
                 <div class="box-body">
                     <div class="dataTables_wrapper form-inline dt-bootstrap">
@@ -34,24 +34,24 @@
                                         <tr role="row">
                                             <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1" aria-sort="ascending"
-                                                aria-label="转让编号: activate to sort column descending">
-                                                转让编号
+                                                aria-label="授权编号: activate to sort column descending">
+                                                授权编号
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1" aria-label="文件hash: activate to sort column ascending">
                                                 文件hash
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                colspan="1" aria-label="转让者: activate to sort column ascending">
-                                                转让者
+                                                colspan="1" aria-label="授权者: activate to sort column ascending">
+                                                授权者
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                colspan="1" aria-label="被转让者: activate to sort column ascending">
-                                                被转让者
+                                                colspan="1" aria-label="被授予者: activate to sort column ascending">
+                                                被授予者
                                             </th>
                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                colspan="1" aria-label="转让时间: activate to sort column ascending">
-                                                转让时间
+                                                colspan="1" aria-label="授权时间: activate to sort column ascending">
+                                                授权时间
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1" aria-label="区块链txhash: activate to sort column ascending">
@@ -64,19 +64,19 @@
                                        </tr>
                                     </thead>
                                     <tbody>
-                                        {% for transfer in transfers %}
+                                        {% for authorization in authorizations %}
                                         <tr role="row" class="{{ 'odd' if loop.index0 % 2 == 0 else 'even'}}">
-                                            <td>{{ transfer.id }}</td>
-                                            <td class="col-md-3"><a href="{{ url_for('showcase.show_file', hash=transfer.file_hash) }}"> {{ transfer.file_hash }}</a></td>
-                                            <td>{{ transfer.from_username }}</td>
-                                            <td>{{ transfer.to_username }}</td>
-                                            <td>{{ transfer.time }}</td>
-                                            <td class="col-md-3"><a href="{{ url_for('ethereum.transaction', tx_hash=transfer.txhash) }}"> {{ transfer.txhash }}</a></td>
+                                            <td>{{ authorization.id }}</td>
+                                            <td class="col-md-3"><a href="{{ url_for('showcase.show_file', hash=authorization.file_hash) }}"> {{ authorization.file_hash }}</a></td>
+                                            <td>{{ authorization.authorizer_username }}</td>
+                                            <td>{{ authorization.authorized_username }}</td>
+                                            <td>{{ authorization.time }}</td>
+                                            <td class="col-md-3"><a href="{{ url_for('ethereum.transaction', tx_hash=authorization.txhash) }}"> {{ authorization.txhash }}</a></td>
                                             <td>
-                                            {% if transfer.is_confirmed %}
-                                                <span class="text-green">已确认({{ transfer.confirm_num }})</span>
-                                            {% elif transfer.confirm_num is not none %}
-                                                <span class="text-blue">确认中({{ transfer.confirm_num }})</span>
+                                            {% if authorization.is_confirmed %}
+                                                <span class="text-green">已确认({{ authorization.confirm_num }})</span>
+                                            {% elif authorization.confirm_num is not none %}
+                                                <span class="text-blue">确认中({{ authorization.confirm_num }})</span>
                                             {% else %}
                                                 <span class="text-yellow">等待确认中</span>
                                             {% endif %}
@@ -93,9 +93,10 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 
 {% block script_doc_ready %}
     {{ super() }}
-    active_dropdown(4)
+    active_dropdown(3)
 {% endblock %}

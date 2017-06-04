@@ -91,9 +91,14 @@
                                                             data-toggle="modal" data-target="#authorizeModal"
                                                             data-hash="{{ file.hash }}"
                                                             data-filename="{{ file.filename }}"
-                                                            data-description="{{ file.description }}">授权</button>
+                                                            data-description="{{ file.description }}"
+                                                            data-action_type="作品授权">授权</button>
                                                     <button name="transfer" type="submit" class="btn btn-primary btn-sm {{ 'disabled' if not file.is_confirmed }}" style="margin-left: 5px"
-                                                            data-toggle="modal" data-target="#transferModal">转让</button>
+                                                            data-toggle="modal" data-target="#authorizeModal"
+                                                            data-hash="{{ file.hash }}"
+                                                            data-filename="{{ file.filename }}"
+                                                            data-description="{{ file.description }}"
+                                                            data-action_type="作品转让">转让</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -115,7 +120,7 @@
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">×</span></button>
-                <h4 class="modal-title">作品授权</h4>
+                <h4 class="modal-title" id="modal_info_type">作品授权</h4>
               </div>
               <div class="modal-body">
                   <label>文件信息:</label>
@@ -139,14 +144,14 @@
                   <form id="authorize_form" method="post">
                       <input type="hidden" id="hash">
                       <div class="form-group">
-                          <label for="to_user" class="control-label">被授权者的用户名:</label>
+                          <label for="to_user" class="control-label">接收者的用户名:</label>
                           <input type="text" class="form-control" id="to_user">
                       </div>
                   </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="on_authorize_submit($('#hash').val(), $('#to_user').val())">确认</button>
+                <button type="button" class="btn btn-primary" onclick="on_authorize_submit($('#modal_info_type').text(), $('#hash').val(), $('#to_user').val())">确认</button>
               </div>
             </div>
             <!-- /.modal-content -->
@@ -169,7 +174,12 @@
         var filename = button.data('filename');
         var description = button.data('description');
 
+        var type = button.data('action_type');
+
         var modal = $(this);
+
+        modal.find('#modal_info_type').text(type);
+
         modal.find('#modal_info_hash').text(hash);
         modal.find('#modal_info_filename').text(filename);
         modal.find('#moal_info_description').text(description);
@@ -184,9 +194,15 @@
 {% block scripts %}
     {{ super() }}
     <script type="application/javascript">
-        function on_authorize_submit(hash, to_user) {
+        function on_authorize_submit(action_type, hash, to_user) {
             var authorizeForm = $('#authorize_form');
-            authorizeForm.attr('action', Flask.url_for('showcase.authorize', {hash: hash, to_user: to_user}));
+            var url;
+            if (action_type === '作品授权') {
+                url = Flask.url_for('showcase.authorize', {hash: hash, to_user: to_user});
+            } else {
+                url = Flask.url_for('showcase.transfer', {hash: hash, to_user: to_user});
+            }
+            authorizeForm.attr('action', url);
             authorizeForm.submit();
         }
     </script>

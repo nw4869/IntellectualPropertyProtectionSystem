@@ -114,6 +114,19 @@ class Authorization(db.Model):
     authorized_user = db.relationship('User', backref='authorized_authorizations', foreign_keys=[authorized_username])
 
 
+class Transfer(db.Model):
+    __tablename__ = 'transfers'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    file_hash = db.Column(db.String(255), db.ForeignKey('files.hash'), nullable=False)
+    from_username = db.Column(db.String(255), db.ForeignKey('users.username'), nullable=False)
+    to_username = db.Column(db.String(255), db.ForeignKey('users.username'), nullable=False)
+    time = db.Column(db.TIMESTAMP, default=db.func.now(), nullable=False)
+    txhash = db.Column(db.String(255), nullable=False)
+
+    from_user = db.relationship('User', backref='from_transfers', foreign_keys=[from_username])
+    to_user = db.relationship('User', backref='to_transfers', foreign_keys=[to_username])
+
+
 class Wallet(db.Model):
     __tablename__ = 'wallets'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

@@ -41,6 +41,14 @@ def authorizations():
     return render_template('admin/authorizations.html', authorizations=authorizations)
 
 
+@admin.route('/transfers')
+@admin_required
+def transfers():
+    transfers = Transfer.query.all()
+    append_confirm_info(transfers)
+    return render_template('admin/transfers.html', transfers=transfers)
+
+
 @admin.route('/transactions')
 @admin_required
 def transactions():

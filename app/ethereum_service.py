@@ -111,7 +111,7 @@ def transfer(from_user, to_user, file):
     file_hash = bytearray(unhexlify(file.hash))
 
     # unlock
-    web3.personal.unlockAccount(from_address, '4869', 0)
+    web3.personal.unlockAccount(from_address, from_user.wallets[0].key_origin, 0)
 
     gas_limit = web3.eth.getBlock('latest')['gasLimit']
     gas_estimate = my_contract.estimateGas({'from': from_address}).transfer(file_hash, to_address)

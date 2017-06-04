@@ -7,7 +7,7 @@ from app import db
 from app.errors import EthereumException
 from . import showcase
 from app import ethereum_service
-from app.models import File, Transaction, Authorization, User
+from app.models import File, Transaction, Authorization, User, Transfer
 
 
 @showcase.route('/')
@@ -94,6 +94,9 @@ def authorize(hash, to_user):
     if file.owner_user != current_user:
         abort(403, '只能授权自己的作品')
 
+    if file.owner_user == to_user_entity:
+        abort(400, '不能授权给自己')
+
     if not ethereum_service.file_is_confirmed(file):
         abort(400, '作品尚未确认，不能授权')
 
@@ -111,3 +114,40 @@ def authorize(hash, to_user):
     db.session.add(authorization)
 
     return redirect(url_for('user.authorizations'))
+
+
+@showcase.route('/<hash>/transfer/<to_user>', methods=['POST'])
+@login_required
+def transfer(hash, to_user):
+    to_username = to_user
+    file = File.query.filter_by(hash=hash).first()
+    if file is None:
+        abort(404, '文件不存在')
+
+    to_user_entity = User.query.filter_by(username=to_username).first()
+    if not to_user_entity:
+        abort(400, '用户名有误')
+
+    # 只能转让自己的的作品
+    if file.owner_user != current_user:
+        abort(403, '只能转让自己的作品')
+
+    if file.owner_user == to_user_entity:
+        abort(400, '不能转让给自己')
+
+    if not ethereum_service.file_is_confirmed(file):
+        abort(400, '作品尚未确认，不能转让')
+
+    # 写入以太坊
+    tx_hash = ethereum_service.transfer(current_user, to_user_entity, file)
+
+    # 写入数据库
+    transfer = Transfer(file_hash=file.hash, from_username=current_user.username,
+                        to_username=to_username,
+                        txhash=tx_hash)
+    file.owner = to_username
+
+    db.session.add(transfer)
+    db.session.add(file)
+
+    return redirect(url_for('user.transfers'))

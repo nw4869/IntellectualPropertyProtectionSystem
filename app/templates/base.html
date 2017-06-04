@@ -76,6 +76,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <li><a href="{{ url_for('user.wallet') }}">我的钱包</a></li>
                       <li><a href="{{ url_for('user.files') }}">我的知识产权</a></li>
                       <li><a href="{{ url_for('user.authorizations') }}">我的授权</a></li>
+                      <li><a href="{{ url_for('user.transfers') }}">我的转让</a></li>
                       <li><a href="{{ url_for('user.transactions') }}">我的交易</a></li>
                   </ul>
               </li>
@@ -88,6 +89,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li><a href="{{ url_for('admin.users') }}">用户管理</a></li>
                 <li><a href="{{ url_for('admin.files') }}">知识产权管理</a></li>
                 <li><a href="{{ url_for('admin.authorizations') }}">授权管理</a></li>
+                  <li><a href="{{ url_for('admin.transfers') }}">转让管理</a></li>
                 <li><a href="{{ url_for('admin.transactions') }}">交易管理</a></li>
               </ul>
             </li>
@@ -215,8 +217,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <img src="{{ url_for('static', filename='adminlte/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
 
                   <p>
-                    Alexander Pierce - Web Developer
-                    <small>Member since Nov. 2012</small>
+                      {{ current_user.name }}
+{#                    <small>Member since Nov. 2012</small>#}
                   </p>
                 </li>
                 <!-- Menu Body -->
