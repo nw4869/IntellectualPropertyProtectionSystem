@@ -18,7 +18,6 @@ Hello world<br>
 
 {% block script_doc_ready %}
     {{ super() }}
-{#    TODO fix drop down active #}
     function active_dropdown(nav_dropdown_active) {
         if (typeof nav_dropdown_active === 'number') {
             $("#navbar-my").find("> ul > li").each(function (i) {

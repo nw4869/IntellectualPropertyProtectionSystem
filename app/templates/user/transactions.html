@@ -1,15 +1,15 @@
 {% extends "user/base.html" %}
 
 {% block title %}
-我的转让
+我的交易
 {% endblock %}
 
 {% block content_header_title %}
-我的转让
+我的交易
 {% endblock %}
 
 {% block content_header_description %}
-    my transfers
+    my transactions
 {% endblock %}
 
 {% block content %}
@@ -17,7 +17,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3>转让列表</h3>
+                    <h3>交易列表</h3>
                 </div>
                 <div class="box-body">
                     <div class="dataTables_wrapper form-inline dt-bootstrap">
@@ -34,24 +34,28 @@
                                         <tr role="row">
                                             <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1" aria-sort="ascending"
-                                                aria-label="转让编号: activate to sort column descending">
-                                                转让编号
+                                                aria-label="交易编号: activate to sort column descending">
+                                                交易编号
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                colspan="1" aria-label="文件hash: activate to sort column ascending">
-                                                文件hash
+                                                colspan="1" aria-label="文件哈希: activate to sort column ascending">
+                                                文件哈希
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                colspan="1" aria-label="转让者: activate to sort column ascending">
-                                                转让者
+                                                colspan="1" aria-label="出售者: activate to sort column ascending">
+                                                出售者
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                colspan="1" aria-label="被转让者: activate to sort column ascending">
-                                                被转让者
+                                                colspan="1" aria-label="购买者: activate to sort column ascending">
+                                                购买者
                                             </th>
-                                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
-                                                colspan="1" aria-label="转让时间: activate to sort column ascending">
-                                                转让时间
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="交易金额: activate to sort column ascending">
+                                                交易金额
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                colspan="1" aria-label="交易时间: activate to sort column ascending">
+                                                交易时间
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
                                                 colspan="1" aria-label="区块链txhash: activate to sort column ascending">
@@ -64,19 +68,20 @@
                                        </tr>
                                     </thead>
                                     <tbody>
-                                        {% for transfer in transfers %}
+                                        {% for tx in transactions %}
                                         <tr role="row" class="{{ 'odd' if loop.index0 % 2 == 0 else 'even'}}">
-                                            <td>{{ transfer.id }}</td>
-                                            <td class="col-md-3"><a href="{{ url_for('showcase.show_file', hash=transfer.file_hash) }}"> {{ transfer.file_hash }}</a></td>
-                                            <td>{{ transfer.from_username }}</td>
-                                            <td>{{ transfer.to_username }}</td>
-                                            <td>{{ transfer.time }}</td>
-                                            <td class="col-md-3"><a href="{{ url_for('ethereum.transaction', tx_hash=transfer.txhash) }}"> {{ transfer.txhash }}</a></td>
+                                            <td>{{ tx.id }}</td>
+                                            <td class="col-md-3"><a href="{{ url_for('showcase.show_file', hash=tx.file_hash) }}"> {{ tx.file_hash }}</a></td>
+                                            <td>{{ tx.seller }}</td>
+                                            <td>{{ tx.buyer }}</td>
+                                            <td>{{ tx.money }} ether</td>
+                                            <td>{{ tx.time }}</td>
+                                            <td class="col-md-3"><a href="{{ url_for('ethereum.transaction', tx_hash=tx.txhash) }}"> {{ tx.txhash }}</a></td>
                                             <td>
-                                            {% if transfer.is_confirmed %}
-                                                <span class="text-green">已确认({{ transfer.confirm_num }})</span>
-                                            {% elif transfer.confirm_num is not none %}
-                                                <span class="text-blue">确认中({{ transfer.confirm_num }})</span>
+                                            {% if tx.is_confirmed %}
+                                                <span class="text-green">已确认({{ tx.confirm_num }})</span>
+                                            {% elif tx.confirm_num is not none %}
+                                                <span class="text-blue">确认中({{ tx.confirm_num }})</span>
                                             {% else %}
                                                 <span class="text-yellow">等待确认中</span>
                                             {% endif %}
@@ -97,5 +102,5 @@
 
 {% block script_doc_ready %}
     {{ super() }}
-    active_dropdown(4)
+    active_dropdown(3)
 {% endblock %}
