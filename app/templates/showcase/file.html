@@ -48,6 +48,10 @@
                         <a href="{{ url_for('ethereum.transaction', tx_hash=file.txhash) }}">查看区块链信息</a>
                     </p>
 
+                    {% if file.owner == current_user.username %}
+                        <a href="{{ url_for('showcase.show_certificate', hash=file.hash) }}">查看证书</a>
+                    {% endif %}
+
                     {% if file.for_sell and file.owner != current_user.username %}
                         <div class="pull-right">
                             <p style="color: #F40">售价：{{ file.price }} (以太)</p>

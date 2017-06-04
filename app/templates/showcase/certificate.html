@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ type }}
+{% endblock %}
+
+{% block content_header_title %}
+    {{ type }}
+{% endblock %}
+
+{% block content_header_description %}
+    certificate
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="box box-solid">
+{#        <div>#}
+            <div class="box-body text-center">
+                <h2>{{ type }}</h2>
+                <div style="margin-top: 48px">
+                    <img class="img-responsive " style="max-height: 400px; margin: auto; border: 1px solid rgb(73, 186, 216); padding: 10px" src="{{ image_url }}" alt="Photo">
+                </div>
+                <p style="font-size: 32px; margin-top: 32px; font-weight: 500">
+                    {{ filename }}
+                </p>
+                <p style="font-size: 24px;" class="text-light-blue">
+                    {{ username }}
+                </p>
+                <p>
+                    Copyright © {{ time.year }}
+                </p>
+                <p>
+                    <a href="{{ url_for('ethereum.transaction', tx_hash=tx_hash) }}">  {{ tx_hash }} </a>
+                </p>
+
+                <p style="margin-top: 32px">
+                    该证书用于证明 <b>{{ username }}</b> 于 {{ time }} 的 {{ action }}
+                </p>
+            </div>
+        </div>
+    </div>
+ {% endblock %}
+
+{% block script_doc_ready %}
+    {{ super() }}
+    active_nav(1)
+{% endblock %}

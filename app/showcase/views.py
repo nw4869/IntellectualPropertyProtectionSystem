@@ -42,6 +42,21 @@ def show_file(hash):
     return render_template('showcase/file.html', file=file, file_url=file_url)
 
 
+@showcase.route('/<hash>/certificate')
+def show_certificate(hash):
+    file = File.query.filter_by(hash=hash).first()
+    if file is None:
+        abort(404)
+
+    if file.owner_user != current_user:
+        abort(403)
+
+    image_url = app.upload_files.url(file.hash + '.jpg')
+    return render_template('showcase/certificate.html', type='作品证书', action='作品登记',
+            time=file.time, filename=file.filename, tx_hash=file.txhash, image_url=image_url, username=file.owner)
+
+
+
 @showcase.route('/<hash>/purchase', methods=['POST'])
 @login_required
 def purchase(hash):
