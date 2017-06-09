@@ -23,3 +23,8 @@ def balance_error(e):
 
 def ethereum_error(e):
     return request_error(e)
+
+
+def ethereum_rpc_error(e):
+    e.description = '以太坊RPC连接错误'
+    return internal_server_error(e)

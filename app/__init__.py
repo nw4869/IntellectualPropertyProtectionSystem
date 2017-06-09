@@ -7,7 +7,7 @@ from flask_uploads import configure_uploads, patch_request_class, UploadSet
 from flask_moment import Moment
 from flask_jsglue import JSGlue
 import logging
-from logging import handlers
+from requests.exceptions import ConnectionError, RequestException
 
 from web3 import Web3, KeepAliveRPCProvider, contract
 
@@ -99,6 +99,9 @@ def create_app(config_name):
     app.register_error_handler(500, custom_error_pages.internal_server_error)
     app.register_error_handler(errors.BalanceException, custom_error_pages.balance_error)
     app.register_error_handler(errors.EthereumException, custom_error_pages.ethereum_error)
+
+    # for ethereum RPC connection error
+    app.register_error_handler(RequestException, custom_error_pages.ethereum_rpc_error)
 
     print('app created')
 

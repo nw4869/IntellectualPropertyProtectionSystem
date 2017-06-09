@@ -5,6 +5,11 @@ class EthereumException(Exception):
             self.description = description
 
 
+class EthereumRPCError(EthereumException):
+    def __init__(self, description):
+        self.description = description if description else'以太坊RPC连接错误'
+
+
 class BalanceException(EthereumException):
     def __init__(self, value=None, balance=None):
         if balance is not None and value is not None:

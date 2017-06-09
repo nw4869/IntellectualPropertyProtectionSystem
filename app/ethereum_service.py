@@ -6,7 +6,6 @@ from app.errors import *
 
 
 eth = web3.eth
-web3.personal.unlockAccount(eth.accounts[0], '4869', 0)
 
 
 def get_block(block_num):
