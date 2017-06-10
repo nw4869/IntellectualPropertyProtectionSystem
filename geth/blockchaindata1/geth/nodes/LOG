@@ -1,0 +1,32 @@
+=============== Jun 4, 2017 (CST) ===============
+13:08:31.717624 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+13:08:31.732639 db@open opening
+13:08:31.738644 version@stat F·[] S·0B[] Sc·[]
+13:08:31.741646 db@janitor F·2 G·0
+13:08:31.741646 db@open done T·9.0069ms
+13:08:58.810426 db@close closing
+13:08:58.816430 db@close done T·6.0046ms
+=============== Jun 4, 2017 (CST) ===============
+13:11:42.362035 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+13:11:42.363027 version@stat F·[] S·0B[] Sc·[]
+13:11:42.363027 db@open opening
+13:11:42.363027 journal@recovery F·1
+13:11:42.365029 journal@recovery recovering @1
+13:11:42.371034 memdb@flush created L0@2 N·8 S·283B "n:\x98..ing,v8":"version,v1"
+13:11:42.374034 version@stat F·[1] S·283B[283B] Sc·[0.25]
+13:11:42.381039 db@janitor F·3 G·0
+13:11:42.381039 db@open done T·18.012ms
+13:12:42.718966 db@close closing
+13:12:42.746981 db@close done T·28.0151ms
+=============== Jun 10, 2017 (CST) ===============
+01:33:11.634672 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+01:33:11.636674 version@stat F·[1] S·283B[283B] Sc·[0.25]
+01:33:11.636674 db@open opening
+01:33:11.637688 journal@recovery F·1
+01:33:11.639682 journal@recovery recovering @3
+01:33:11.662766 memdb@flush created L0@5 N·16 S·338B "n:\x98..ing,v25":"n:\x98..ing,v10"
+01:33:11.667770 version@stat F·[2] S·621B[621B] Sc·[0.50]
+01:33:11.686774 db@janitor F·4 G·0
+01:33:11.686774 db@open done T·50.1003ms
+01:33:19.487659 db@close closing
+01:33:19.500667 db@close done T·13.0078ms

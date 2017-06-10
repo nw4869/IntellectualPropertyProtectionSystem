@@ -1,0 +1,6 @@
+
+eth.mining
+miner.start(1)
+miner.stop()
+eth.mining
+miner.start(1)

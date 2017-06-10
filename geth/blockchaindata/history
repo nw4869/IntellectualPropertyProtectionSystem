@@ -1,0 +1,14 @@
+eth.accounts
+miner.setEtherbase('0x50b23d0c4ccd194e0629595a7b119b3a9ed478fe')
+miner.stop()
+miner.start(1)
+miner.stop()
+miner.start(1)
+miner.stop()
+miner.start(1)
+miner.stop()
+miner.start(1)
+miner.stop()
+eth.mining
+miner.start(1)
+miner.stop

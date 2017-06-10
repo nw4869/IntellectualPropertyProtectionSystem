@@ -1,0 +1,1 @@
+geth --rpc --rpccorsdomain "*" --rpcport 8546 --datadir blockchaindata1 --port 30304 --rpcapi "personal,db,eth,net,web3" --networkid 999 --ipcdisable --bootnodes=enode://984f5de13cfd75071ef287588102c174bcb0a7a07d5e6469d32238ea75ec766ca3ee167d79ed3e7635247e610516f10a5a3d99ee7b87f8e0a53ed61d571c33f4@127.0.0.1:30301 --nat none --verbosity 3 --nodiscover console
